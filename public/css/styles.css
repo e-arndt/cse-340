@@ -276,7 +276,7 @@ body {
   .hero-upgrades,
   .hero-reviews {
     flex: 1 1 45%;  /* each takes about half width */
-    max-width: 400px; /* optional: cap the size */
+    max-width: 400px; /* cap the size */
   }
 }
 
@@ -314,6 +314,6 @@ body {
   }
 
   .hero-reviews ul {
-    padding-left: 1.5rem;   /* add breathing room */
+    padding-left: 1.5rem;   /* add room so not crushed on the left edge */
   }
 }
