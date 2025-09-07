@@ -16,18 +16,11 @@
   --color-rev-text: ghostwhite;
   --color-text: black;
   --color-muted: #6c757d;
-  --color-accent-hover: #005a9e;
+  --color-link: blue;
   --color-border: #eac50b;
   --color-error: #d13438;
   --color-success: #107c10;
   --color-warning: #ffb900;
-
-  /* Spacing Units */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
 
   /* Border Radius */
   --radius-sm: 4px;
@@ -38,13 +31,26 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+
+  /* Font Sizes */
+  --font-h1-size: 2rem;   
+  --font-h2-size: 1.5rem; 
+  --font-h3-size: 1.25rem;
+  --font-ul-size: 1.1rem;
+}
+
+body {
+  background: var(--color-rev-text);
+  padding: 0;
+  margin: 0;
 }
 
 #bkgd-wrapper {
   background-image: url("/images/site/checkerboard.jpg");
   background-repeat: repeat;
   background-size: 350px 350px;
-  min-height: 100vh; /* ensures full viewport coverage */
+  min-height: 100vh; /* full viewport coverage */
+  padding-top: 16px; /* small gap at top, pushes content down not the bkgd */
 }
 
 
@@ -105,6 +111,11 @@
 #main-nav li a:hover {
   background-color: var(--color-border);
   color: var(--color-text);
+}
+
+.container h1 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: var(--font-h1-size);
 }
 
 .hero-section {
@@ -169,6 +180,7 @@
 .btn:hover {
   filter: brightness(110%);
   transition: filter 0.2s ease-in-out;
+  
 }
 
 .hero-overlay a {
@@ -178,7 +190,7 @@
 
 .hero-columns {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
   flex-wrap: wrap;
@@ -186,7 +198,7 @@
 
 .hero-upgrades,
 .hero-reviews {
-  flex: 1 1 45%;
+  flex: 1 1 35%;
 }
 
 .hero-upgrades img,
@@ -195,16 +207,113 @@
 }
 
 .hero-reviews ul {
-  list-style-type: none;
+  list-style-type: disc;
   padding-left: 0;
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: var(--font-ul-size);
+  line-height: 2.75;
+}
+
+.upgrades-row {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.upgrade-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upgrade-item a {
+  margin-top: 0.25rem;       /* spacing between box and link */
+  margin-bottom: 0.75rem;    /* spacing between boxes */
+  text-decoration: none;     /* remove link underlines */
+  color: var(--color-link);  /* use var() color */
+  font-size: 1rem;           /* link text size */
 }
 
 
-@media (max-width: 768px) {
+.upgrade-box {
+  aspect-ratio: 5 / 3;
+  width: 180px;
+  height: 90px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+
+.upgrade-box img {
+  max-width: 70%;
+  height: auto;
+}
+
+.copyright {
+  font-family: var(--font-sans);
+  font-size: var(--font-ul-size);
+}
+
+
+
+@media (max-width: 960px) {
   #wrapper {
     padding: 0 8px;
   }
 
+  
+
+}
+
+
+@media (max-width: 850px) {
+  @media (max-width: 850px) {
+  .hero-upgrades,
+  .hero-reviews {
+    flex: 1 1 45%;  /* each takes about half width */
+    max-width: 400px; /* optional: cap the size */
+  }
+}
+
+
+}
+
+
+@media (max-width: 500px) {
+  .hero-columns {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-upgrades,
+  .hero-reviews {
+    flex: 1 1 100%; 
+    max-width: 100%; 
+  }
+
+  .hero-overlay {
+    position: static;       /* turn off absolute positioning */
+    margin-top: 2rem;       /* spacing below HERO image */
+    max-width: 100%;        /* expand to full width */
+  }
+
+  #main-nav ul {
+    flex-direction: column;   /* stack items vertically */
+    align-items: center;      /* center them */
+  }
+
+  #main-nav li a {
+    display: block;
+    width: 100%;              /* full width buttons */
+    text-align: center;       /* center text */
+  }
+
+  .hero-reviews ul {
+    padding-left: 1.5rem;   /* add breathing room */
+  }
 }
