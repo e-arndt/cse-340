@@ -316,6 +316,7 @@ body {
   font-size: 1.5rem;
 }
 
+/* existing styles */
 .error-image {
   text-align: center;
   margin-top: 2rem;
@@ -327,10 +328,22 @@ body {
   height: auto;
 }
 
-.message {
-  font-family: var(--font-sans);
-  font-size: 1.5rem;
+/* new rules scoped to error page */
+.error-page h1 {
+  font-family: var(--font-mono);
+  text-align: center;
+  font-size: 3.5rem;  /* adjust as you like */
+  margin-bottom: 1rem;
 }
+
+.error-page .message {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  text-align: center;  /* centers message text */
+  font-size: 1.5rem;   /* smaller than h1 */
+  margin-bottom: 1.5rem;
+}
+
 
 
 @media (max-width: 960px) {

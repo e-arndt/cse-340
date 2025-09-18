@@ -1,18 +1,20 @@
-<%# Error Heading %>
-<% if (title) { %>
-  <h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-} %>
+<div class="error-page">
+  <%# Error Heading %>
+  <% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
 
-<%# Error Message %>
-<% if (message) { %>
-  <div class="message">
-    <%- message %>
+  <%# Error Message %>
+  <% if (message) { %>
+    <div class="message">
+      <%- message %>
+    </div>
+  <% } %>
+
+  <%# Error Image %>
+  <div class="error-image">
+    <img src="/images/vehicles/delorean-crash.png" alt="Crashed DeLorean" />
   </div>
-<% } %>
-
-<%# Error Image %>
-<div class="error-image">
-  <img src="/images/vehicles/delorean-crash.png" alt="Crashed DeLorean" />
 </div>
