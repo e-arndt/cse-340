@@ -12,12 +12,20 @@ invCont.buildByClassificationId = async function (req, res, next) {
   const grid = await utilities.buildClassificationGrid(data)
   let nav = await utilities.getNav()
   const className = data[0].classification_name
+
   res.render("./inventory/classification", {
-    title: className + " vehicles",
+    title: `${className} vehicles`,
+    metaDescription: `Browse our selection of ${className} vehicles available at CSE Motors.`,
+    ogTitle: `${className} Vehicles at CSE Motors`,
+    ogDescription: `Find your next ride among our ${className} vehicles — quality options for every driver.`,
+    ogImage: data[0].inv_thumbnail || data[0].inv_image || "/images/site/logo.png",
+    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    preloadImage: data[0]?.inv_thumbnail || data[0]?.inv_image || null,
     nav,
     grid,
   })
 }
+
 
 
 /* ***************************
@@ -36,11 +44,19 @@ invCont.buildDetailView = async function (req, res, next) {
   const detail = await utilities.buildDetailView(vehicleData)
 
   res.render("./inventory/detail", {
-    title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
+  title: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
+  metaDescription: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}. ${vehicleData.inv_description}`,
+  ogTitle: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
+  ogDescription: vehicleData.inv_description,
+  ogImage: vehicleData.inv_image,
+  ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+  preloadImage: vehicleData.inv_image,
+
     nav,
     detail
   })
 }
+
 
 
 module.exports = invCont

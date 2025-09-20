@@ -41,13 +41,27 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Better try a different route!'}
+
+  let message
+  if (err.status == 404) {
+    message = err.message
+  } else {
+    message = 'Oh no! There was a crash. Better try a different route!'
+  }
+
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message,
-    nav
+    nav,
+    metaDescription: "An error occurred while trying to access CSE Motors.",
+    ogTitle: "CSE Motors - Error",
+    ogDescription: message,
+    ogImage: "/images/vehicles/delorean-crash.png",
+    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    preloadImage: "/images/vehicles/delorean-crash.png"
   })
 })
+
 
 /* ***********************
  * Local Server Information
