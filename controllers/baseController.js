@@ -6,6 +6,7 @@ const baseController = {}
  * ************************** */
 baseController.buildHome = async function (req, res) {
   const nav = await utilities.getNav()
+  // req.flash("notice", "This is a flash message.") - Test Message
   res.render("index", {
     title: "Home",
     metaDescription: "Welcome to CSE Motors! Browse our collection of cars, trucks, and SUVs.",
