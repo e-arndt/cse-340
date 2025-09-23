@@ -247,7 +247,44 @@ VALUES (
         108247,
         'White',
         5
-    );
+    ),
+    (
+        'Toyota',
+        'Avalon XLS',
+        1995,
+        'Powered by a smooth V6 that purrs like a kitten. Features Toyota’s legendary reliability. Built for comfort, with more legroom than your grandma’s La-Z-Boy and none of the floral upholstery.',
+        '/images/avalon.jpg',
+        '/images/avalon-tn.jpg',
+        5500,
+        82000,
+        'Pearl White',
+        5
+    ),
+    (
+        'Plymouth',
+        'Satellite',
+        1968,
+        'Classic 318 V8 under the hood, drag down the strip or drag the family to the store. This late-60s vehicle blends muscle car spirit with everyday practicality.',
+        '/images/satellite.jpg',
+        '/images/satellite-tn.jpg',
+        20000,
+        67500,
+        'Frost Blue',
+        5
+    ),
+    (
+        'Lincoln',
+        'Continental',
+        1979,
+        'Luxury, class, and pure American sophistication. Powered by a massive 400 cubic inch (6.6L) V8, it glides down the road with unmatched comfort. A true land yacht, that will drain you dry at the gas pump.',
+        '/images/continental.jpg',
+        '/images/continental-tn.jpg',
+        35000,
+        78000,
+        'Champagne',
+        5
+);
+
 
 
 
