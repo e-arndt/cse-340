@@ -14,7 +14,7 @@ async function buildLogin(req, res, next) {
     ogDescription: "Log in to manage your account at CSE Motors.",
     ogImage: "/images/site/delorean.jpg",
     ogUrl: req.originalUrl,
-    preloadImage: "/images/site/delorean.jpg"
+    preloadImage: "/images/site/checkerboard.jpg"
   })
 }
 

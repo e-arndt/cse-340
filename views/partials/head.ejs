@@ -29,17 +29,18 @@
   <link rel="icon" href="/images/site/favicon-32x32.png" type="image/png" sizes="32x32">
 
   <!-- Preloads -->
-  <% if (title === "Home" || title === "Server Error") { %>
-  <link rel="preload" as="image" href="/images/site/checkerboard.jpg">
+  <% if (title === "Home" || title === "Server Error" || title === "Login") { %>
+    <link rel="preload" as="image" href="/images/site/checkerboard.jpg">
   <% } %>
 
   <% if (ogImage && title !== 'Home') { %>
-  <link rel="preload" as="image" href="<%= ogImage %>">
+    <link rel="prefetch" as="image" href="<%= ogImage %>">
   <% } %>
 
   <% if (preloadImage) { %>
-  <link rel="preload" as="image" href="<%= preloadImage %>">
+    <link rel="preload" as="image" href="<%= preloadImage %>">
   <% } %>
+
 
   
   <!-- Fonts + Styles -->
