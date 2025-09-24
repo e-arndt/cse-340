@@ -1,5 +1,7 @@
 // controllers/accountController.js
 const utilities = require("../utilities")
+const accountModel = require("../models/account-model")
+
 
 /* ****************************************
 *  Deliver login view
@@ -36,5 +38,43 @@ async function buildRegister(req, res, next) {
   })
 }
 
-module.exports = { buildLogin, buildRegister }
+
+/* ****************************************
+*  Process Registration
+* *************************************** */
+async function registerAccount(req, res, next) {
+  const { account_firstname, account_lastname, account_email, account_password } = req.body
+
+  try {
+    const regResult = await accountModel.registerAccount(
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_password
+    )
+
+    if (regResult) {
+      req.flash("notice", "Account successfully created. Please log in.")
+      res.redirect("/account/login")
+    } else {
+      let nav = await utilities.getNav()
+      res.status(500).render("account/register", {
+        title: "Register",
+        nav,
+        metaDescription: "Register for a CSE Motors account.",
+        ogTitle: "CSE Motors - Register",
+        ogDescription: "Sign up to create your CSE Motors account.",
+        ogImage: "/images/site/delorean.jpg",
+        ogUrl: req.originalUrl,
+        preloadImage: "/images/site/checkerboard.jpg",
+        errors: null
+      })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+module.exports = { buildLogin, buildRegister, registerAccount }
 

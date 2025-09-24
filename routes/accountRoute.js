@@ -17,5 +17,11 @@ router.get(
 )
 
 
+// POST /account/register
+// Handles form submission from the registration view
+router.post(
+  "/register",
+  utilities.handleErrors(accountController.registerAccount)
+)
 
 module.exports = router;

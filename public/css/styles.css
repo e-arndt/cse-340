@@ -528,6 +528,11 @@ main h1 {
   transition: box-shadow 0.2s ease-in-out;
 }
 
+.notice li {
+  font-family: var(--font-sans);
+  font-weight: bold;
+}
+
 
 .copyright {
   font-family: var(--font-sans);
