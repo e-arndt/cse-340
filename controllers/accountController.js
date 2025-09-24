@@ -19,4 +19,22 @@ async function buildLogin(req, res, next) {
 }
 
 
-module.exports = { buildLogin }
+/* ****************************************
+*  Deliver registration view
+* *************************************** */
+async function buildRegister(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/register", {
+    title: "Register",
+    nav,
+    metaDescription: "Register for a CSE Motors account.",
+    ogTitle: "CSE Motors - Register",
+    ogDescription: "Sign up to create your CSE Motors account.",
+    ogImage: "/images/site/delorean.jpg",
+    ogUrl: req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+module.exports = { buildLogin, buildRegister }
+

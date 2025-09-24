@@ -458,13 +458,84 @@ main h1 {
 }
 
 
+/* Register form styles */
+.register-form {
+  max-width: 400px;
+  margin: 2rem auto;           /* center in wrapper */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: var(--font-sans);
+  background-color: rgba(229, 194, 21, 0.75);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.register-form label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.register-form input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+}
+
+.register-form input:focus {
+  outline: none;
+  border-color: var(--color-border);
+  box-shadow: 0 0 3px var(--color-border);
+}
+
+.rbtn {
+  display: block;
+  width: 100%;
+  max-width: 130px;
+  margin: 1rem auto 0 auto;
+  padding: 0.5rem;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--color-border);
+}
+
+.rbtn:hover {
+  filter: brightness(110%);
+  transition: filter 0.2s ease-in-out;
+  
+}
+
+#pswdBtn {
+  display: block;
+  width: 100%;
+  max-width: 175px;
+  margin: 1rem auto 0 auto;
+  padding: 0.2rem;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: #006bdd;
+  color: ghostwhite;
+}
+
+#pswdBtn:hover {
+  box-shadow: 0 0 4px 2px skyblue;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+
 .copyright {
   font-family: var(--font-sans);
   font-size: var(--font-ul-size);
-  margin: -.5rem;         /* remove default outer spacing */
-  padding: -.5rem;        /* remove default inner spacing */
-  padding-left: 5px;
+  margin: -0.5rem;        
+  padding: 5px 0 5px 5px;                 
 }
+
 
 footer p {
   font-family: var(--font-sans);
