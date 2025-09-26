@@ -58,5 +58,64 @@ invCont.buildDetailView = async function (req, res, next) {
 }
 
 
+/* ***************************
+ *  Build inventory management view
+ * ************************** */
+invCont.buildManagement = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/management", {
+    title: "Vehicle Management",
+    nav,
+    errors: null,
+    metaDescription: "Manage vehicle classifications and inventory at CSE Motors.",
+    ogTitle: "CSE Motors - Vehicle Management",
+    ogDescription: "Access tools to add new classifications and vehicles.",
+    ogImage: "/images/site/delorean.jpg",
+    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+
+/* ***************************
+ *  Deliver Add Classification view
+ * ************************** */
+invCont.buildAddClassification = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./inventory/add-classification", {
+    title: "Add New Classification",
+    nav,
+    errors: null,
+    metaDescription: "Add a new vehicle classification at CSE Motors.",
+    ogTitle: "CSE Motors - Add Classification",
+    ogDescription: "Add a new type of vehicle to the CSE Motors system.",
+    ogImage: "/images/site/logo.png",
+    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+
+/* ***************************
+ *  Deliver Add Vehicle view
+ * ************************** */
+invCont.buildAddVehicle = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  const classifications = (await invModel.getClassifications()).rows
+  res.render("./inventory/add-vehicle", {
+    title: "Add New Vehicle",
+    nav,
+    errors: null,
+    classifications, // for dropdown
+    metaDescription: "Add a new vehicle to the CSE Motors inventory.",
+    ogTitle: "CSE Motors - Add Vehicle",
+    ogDescription: "Add a new vehicle record into the CSE Motors system.",
+    ogImage: "/images/site/logo.png",
+    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+
 
 module.exports = invCont
