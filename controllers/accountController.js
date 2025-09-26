@@ -11,6 +11,7 @@ async function buildLogin(req, res, next) {
   res.render("account/login", {
     title: "Login",
     nav,
+    errors: null,
     metaDescription: "Login to your CSE Motors account.",
     ogTitle: "CSE Motors - Login",
     ogDescription: "Log in to manage your account at CSE Motors.",
@@ -29,6 +30,7 @@ async function buildRegister(req, res, next) {
   res.render("account/register", {
     title: "Register",
     nav,
+    errors: null,
     metaDescription: "Register for a CSE Motors account.",
     ogTitle: "CSE Motors - Register",
     ogDescription: "Sign up to create your CSE Motors account.",

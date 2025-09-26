@@ -4,23 +4,31 @@
 
 <%- messages() %>
 
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
 <form id="registerForm" action="/account/register" method="post" class="register-form">
 
   <p class="form-note"><span aria-hidden="true">*</span> Required fields</p>
 
   <fieldset>
     <label for="account_firstname">*First Name:</label>
-    <input type="text" id="account_firstname" name="account_firstname" required
+    <input type="text" id="account_firstname" name="account_firstname" required value="<%= locals.account_firstname %>"
        pattern="[A-Za-z]{1,}" title="First name must be at least 1 letter.">
 
     <label for="account_lastname">*Last Name:</label>
-    <input type="text" id="account_lastname" name="account_lastname" required
+    <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>"
        pattern="[A-Za-z]{2,}" title="Last name must be at least 2 letters.">
 
     <label for="account_email">*Email:</label>
-    <input type="email" id="account_email" name="account_email" required
+    <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>"
        pattern="[^@]{2,}@[A-Za-z0-9.-]{3,}" 
-       title="Email must have at least 2 characters before @ and 3 after.">
+       title="Must be a valid email address.">
 
     <label for="account_password">*Password: </label>
     <input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?=\S+$).{12,}$"
