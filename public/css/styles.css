@@ -426,16 +426,10 @@ main h1 {
 
 .login-form input {
   padding: 0.5rem;
-  border: 1px solid var(--color-muted);
   border-radius: var(--radius-sm);
   font-size: 1rem;
 }
 
-.login-form input:focus {
-  outline: none;
-  border-color: var(--color-border);
-  box-shadow: 0 0 3px var(--color-border);
-}
 
 .login-form button {
   margin-top: 1rem;
@@ -475,6 +469,7 @@ main h1 {
 }
 
 .notice {
+  font-family: var(--font-sans);
   color: var(--color-error);
 }
 
@@ -515,13 +510,6 @@ main h1 {
 
 .register-form input.invalid {
   border-color: red;
-}
-
-/* focus styling */
-.register-form input:focus {
-  outline: none;
-  border-color: var(--color-border);
-  box-shadow: 0 0 3px var(--color-border);
 }
 
 
@@ -580,6 +568,184 @@ main h1 {
 .notice li {
   font-family: var(--font-sans);
   font-weight: bold;
+}
+
+.classification-form input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+}
+
+.classification-form label {
+  font-family: var(--font-sans);
+  font-weight: bold;
+}
+
+/* Default = red */
+#account_firstname,
+#account_lastname,
+#account_email,
+#account_password,
+#classification_name {
+  border: 2px solid red;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Valid state */
+#account_firstname.valid,
+#account_lastname.valid,
+#account_email.valid,
+#account_password.valid,
+#classification_name.valid {
+  border-color: green !important;
+  box-shadow: 0 0 4px green !important;
+}
+
+/* Invalid state */
+#account_firstname.invalid,
+#account_lastname.invalid,
+#account_email.invalid,
+#account_password.invalid,
+#classification_name.invalid {
+  border-color: red !important;
+  box-shadow: 0 0 4px red !important;
+}
+
+
+.management-links {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+   max-width: 500px;
+}
+
+.management-links li {
+  margin: 0;
+}
+
+.management-links a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--color-link);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+}
+
+.management-links a:hover {
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+
+/* Vehicle form styles */
+.vehicle-form {
+  max-width: 400px;                /* match register form */
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  font-family: var(--font-sans);
+  background-color: rgba(229, 194, 21, 0.75);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.vehicle-form fieldset {
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+
+.vehicle-form label {
+  font-weight: bold;
+}
+
+
+
+
+/* Button same style as Register */
+.vehicle-form .rbtn {
+  display: block;
+  width: 100%;
+  max-width: 130px;
+  margin: 1rem auto 0 auto;
+  padding: 0.5rem;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--color-border);
+  cursor: pointer;
+}
+
+
+/* Default = red */
+#inv_make,
+#inv_model,
+#inv_year,
+#inv_price,
+#inv_miles,
+#inv_color,
+#inv_description,
+#inv_image,
+#inv_thumbnail,
+#classification_id,
+#classification_name {
+  border: 2px solid red;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* Valid state */
+#inv_make.valid,
+#inv_model.valid,
+#inv_year.valid,
+#inv_price.valid,
+#inv_miles.valid,
+#inv_color.valid,
+#inv_description.valid,
+#inv_image.valid,
+#inv_thumbnail.valid,
+#classification_id.valid,
+#classification_name.valid {
+  border-color: green !important;
+  box-shadow: 0 0 4px green !important;
+}
+
+/* Invalid state */
+#inv_make.invalid,
+#inv_model.invalid,
+#inv_year.invalid,
+#inv_price.invalid,
+#inv_miles.invalid,
+#inv_color.invalid,
+#inv_description.invalid,
+#inv_image.invalid,
+#inv_thumbnail.invalid,
+#classification_id.invalid,
+#classification_name.invalid {
+  border-color: red !important;
+  box-shadow: 0 0 4px red !important;
 }
 
 

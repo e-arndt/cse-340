@@ -27,8 +27,7 @@
 
     <label for="account_email">*Email:</label>
     <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>"
-       pattern="[^@]{2,}@[A-Za-z0-9.-]{3,}" 
-       title="Must be a valid email address.">
+       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Must be a valid email address (e.g., user@example.com)">
 
     <label for="account_password">*Password: </label>
     <input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?=\S+$).{12,}$"

@@ -5,12 +5,14 @@ const firstName = document.getElementById("account_firstname");
 const lastName  = document.getElementById("account_lastname");
 const email     = document.getElementById("account_email");
 const password  = document.getElementById("account_password");
+const classNameInput = document.getElementById("classification_name");
 
 // Regex patterns
 const fnRegex    = /^[A-Za-z]{1,}$/;                   // ≥1 letter
 const lnRegex    = /^[A-Za-z]{2,}$/;                   // ≥2 letters
-const emailRegex = /^[^@]{2,}@[A-Za-z0-9.-]{3,}$/;     // ≥2 before @, ≥3 after
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const pswdRegex  = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?=\S+$).{12,}$/;
+const classRegex = /^[A-Za-z]{3,10}$/;
 
 // Shared validator
 function liveValidate(input, regex) {
@@ -30,7 +32,7 @@ if (firstName) liveValidate(firstName, fnRegex);
 if (lastName)  liveValidate(lastName, lnRegex);
 if (email)     liveValidate(email, emailRegex);
 if (password)  liveValidate(password, pswdRegex);
-
+if (classNameInput) liveValidate(classNameInput, classRegex);
 
 
 // Toggle password visibility

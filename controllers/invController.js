@@ -9,8 +9,23 @@ const invCont = {}
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
-  const grid = await utilities.buildClassificationGrid(data)
   let nav = await utilities.getNav()
+
+  if (!data || data.length === 0) {
+    return res.status(404).render("./inventory/classification", {
+      title: "No vehicles found",
+      nav,
+      grid: '<p class="notice">Sorry, no matching vehicles could be found.</p>',
+      metaDescription: "No vehicles were found in this classification.",
+      ogTitle: "No vehicles found",
+      ogDescription: "Browse our inventory at CSE Motors.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg"
+    })
+  }
+
+  const grid = await utilities.buildClassificationGrid(data)
   const className = data[0].classification_name
 
   res.render("./inventory/classification", {
@@ -18,9 +33,9 @@ invCont.buildByClassificationId = async function (req, res, next) {
     metaDescription: `Browse our selection of ${className} vehicles available at CSE Motors.`,
     ogTitle: `${className} Vehicles at CSE Motors`,
     ogDescription: `Find your next ride among our ${className} vehicles — quality options for every driver.`,
-    ogImage: data[0].inv_thumbnail || data[0].inv_image || "/images/site/logo.png",
+    ogImage: "/images/site/delorean.jpg",
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-    preloadImage: data[0]?.inv_thumbnail || data[0]?.inv_image || null,
+    preloadImage: data[0]?.inv_thumbnail || data[0]?.inv_image || "/images/site/checkerboard.jpg",
     nav,
     grid,
   })
@@ -89,7 +104,7 @@ invCont.buildAddClassification = async function (req, res, next) {
     metaDescription: "Add a new vehicle classification at CSE Motors.",
     ogTitle: "CSE Motors - Add Classification",
     ogDescription: "Add a new type of vehicle to the CSE Motors system.",
-    ogImage: "/images/site/logo.png",
+    ogImage: "/images/site/delorean.jpg",
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
     preloadImage: "/images/site/checkerboard.jpg"
   })
@@ -110,11 +125,109 @@ invCont.buildAddVehicle = async function (req, res, next) {
     metaDescription: "Add a new vehicle to the CSE Motors inventory.",
     ogTitle: "CSE Motors - Add Vehicle",
     ogDescription: "Add a new vehicle record into the CSE Motors system.",
-    ogImage: "/images/site/logo.png",
+    ogImage: "/images/site/delorean.jpg",
     ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
     preloadImage: "/images/site/checkerboard.jpg"
   })
 }
+
+
+/* ***************************
+ *  Process add classification
+ * ************************** */
+invCont.addClassification = async function (req, res, next) {
+  const { classification_name } = req.body
+  let nav = await utilities.getNav()
+
+  try {
+    const result = await invModel.addClassification(classification_name)
+
+    if (result) {
+      req.flash("notice", `The classification "${classification_name}" was successfully added.`)
+      res.redirect("/inv/")
+    } else {
+      req.flash("notice", "Sorry, the insert failed.")
+      res.status(500).render("./inventory/add-classification", {
+        title: "Add New Classification",
+        nav,
+        errors: null,
+        metaDescription: "Add a new vehicle classification at CSE Motors.",
+        ogTitle: "CSE Motors - Add Classification",
+        ogDescription: "Add a new type of vehicle to the CSE Motors system.",
+        ogImage: "/images/site/delorean.jpg",
+        ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+        preloadImage: "/images/site/checkerboard.jpg"
+      })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+
+/* ***************************
+ *  Process add vehicle
+ * ************************** */
+invCont.addVehicle = async function (req, res, next) {
+  let {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color
+  } = req.body
+
+  // --- Apply default image paths if missing ---
+  if (!inv_image || inv_image.trim() === "") {
+    inv_image = "/images/vehicles/no-car-image.png"
+  }
+  if (!inv_thumbnail || inv_thumbnail.trim() === "") {
+    inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
+  }
+
+  let nav = await utilities.getNav()
+
+  try {
+    const result = await invModel.addVehicle(
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
+    )
+
+    if (result) {
+      req.flash(
+        "notice",
+        `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully added.`
+      )
+      res.redirect("/inv/")
+    } else {
+      req.flash("notice", "Sorry, the insert failed.")
+      const classifications = (await invModel.getClassifications()).rows
+      res.status(500).render("./inventory/add-vehicle", {
+        title: "Add New Vehicle",
+        nav,
+        errors: null,
+        classifications
+      })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
 
 
 
