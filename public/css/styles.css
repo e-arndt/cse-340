@@ -748,6 +748,25 @@ main h1 {
   box-shadow: 0 0 4px red !important;
 }
 
+#addClassificationForm {
+  background-color: rgba(229, 194, 21, 0.75);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 10px;
+  margin-bottom: 2rem;
+}
+
+#addClassificationForm legend {
+  font-family: var(--font-sans);
+  padding: 5px 0 5px 5px;
+}
+
+#addClassificationForm fieldset {
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
 
 .copyright {
   font-family: var(--font-sans);

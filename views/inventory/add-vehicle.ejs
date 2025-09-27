@@ -59,15 +59,15 @@
 
     <label for="inv_price">*Price:</label>
     <input type="text" id="inv_price" name="inv_price" required
-           pattern="^[0-9]{3,7}$"
-           value="<%= locals.inv_price %>"
-           placeholder="Enter 3–7 digits, no $ , or .">
+          pattern="^[0-9]{3,7}(\.[0-9]{1,2})?$"
+          value="<%= locals.inv_price %>"
+          placeholder="Enter 3–7 digits, decimal or integer">
 
     <label for="inv_year">*Year:</label>
     <input type="text" id="inv_year" name="inv_year" required
            pattern="^[12][0-9]{3}$"
            value="<%= locals.inv_year %>"
-           placeholder="4-digit year, starts with 1 or 2">
+           placeholder="4-digit year, 1900 - current">
 
     <label for="inv_miles">*Miles:</label>
     <input type="text" id="inv_miles" name="inv_miles" required
@@ -77,9 +77,9 @@
 
     <label for="inv_color">*Color:</label>
     <input type="text" id="inv_color" name="inv_color" required
-           minlength="3" maxlength="24" pattern="[A-Za-z]{3,24}"
+           minlength="3" maxlength="24" pattern="[A-Za-z ]{3,24}"
            value="<%= locals.inv_color %>"
-           placeholder="3–24 letters">
+           placeholder="3–24 letters and spaces">
 
     <button type="submit" class="rbtn">Add Vehicle</button>
   </fieldset>

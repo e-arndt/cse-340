@@ -16,13 +16,13 @@ const thumbInput = document.getElementById("inv_thumbnail");
 
 
 // Regex patterns
-const makeRegex   = /^[A-Za-z]{2,}$/;              // ≥2 letters
-const modelRegex  = /^[A-Za-z0-9]{2,}$/;           // ≥2 letters/numbers
-const yearRegex   = /^[12][0-9]{3}$/;              // 4 digits starting with 1 or 2
-const priceRegex  = /^[0-9]{3,7}$/;                // 3–7 digits, no . or ,
-const milesRegex  = /^[0-9]{2,7}$/;                // 2–7 digits, no . or ,
-const colorRegex  = /^[A-Za-z]{3,24}$/;            // 3–24 letters only
-const descRegex   = /^.{4,}$/;                     // at least 4 characters, allows letters/numbers/symbols
+const makeRegex   = /^[A-Za-z]{2,}$/;               // ≥2 letters
+const modelRegex  = /^[A-Za-z0-9]{2,}$/;            // ≥2 letters/numbers
+const yearRegex   = /^[12][0-9]{3}$/;               // 4 digits starting with 1 or 2
+const priceRegex  = /^[0-9]{3,7}(\.[0-9]{1,2})?$/;  // 3–7 digits, up to 2 digits after
+const milesRegex  = /^[0-9]{2,7}$/;                 // 2–7 digits, no . or ,
+const colorRegex  = /^[A-Za-z ]{3,24}$/;            // 3–24 letters and apaces
+const descRegex   = /^.{4,}$/;                      // at least 4 characters, allows letters/numbers/symbols
 const imgRegex    = /^\/images\/vehicles\/[a-zA-Z0-9_-]+\.(png|jpg|webp)$/;
 const thumbRegex  = /^\/images\/vehicles\/[a-zA-Z0-9_-]+-tn\.(png|jpg|webp)$/;
 

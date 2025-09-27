@@ -214,15 +214,21 @@ invCont.addVehicle = async function (req, res, next) {
       )
       res.redirect("/inv/")
     } else {
-      req.flash("notice", "Sorry, the insert failed.")
-      const classifications = (await invModel.getClassifications()).rows
-      res.status(500).render("./inventory/add-vehicle", {
-        title: "Add New Vehicle",
-        nav,
-        errors: null,
-        classifications
-      })
-    }
+  req.flash("notice", "Sorry, the insert failed.")
+  const classifications = (await invModel.getClassifications()).rows
+  res.status(500).render("./inventory/add-vehicle", {
+    title: "Add New Vehicle",
+    nav,
+    errors: null,
+    classifications,
+    metaDescription: "Add a vehicle to the CSE Motors inventory.",
+    ogTitle: "Add New Vehicle - CSE Motors",
+    ogDescription: "Add a new vehicle to the CSE Motors inventory system.",
+    ogImage: "/images/vehicles/no-car-image.png",
+    ogUrl: req.originalUrl,
+    locals: {}
+  })
+}
   } catch (err) {
     next(err)
   }

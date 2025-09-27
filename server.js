@@ -54,6 +54,21 @@ app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "layouts/layout") // not at views root
 
+
+/* ***********************
+ * Default template variables middleware
+ *************************/
+app.use((req, res, next) => {
+  res.locals.metaDescription = "Browse vehicles at CSE Motors"
+  res.locals.ogTitle = "CSE Motors"
+  res.locals.ogDescription = "Find your next vehicle today."
+  res.locals.ogImage = "/images/vehicles/delorean.jpg"
+  res.locals.ogUrl = req.protocol + "://" + req.get("host") + req.originalUrl
+  res.locals.preloadImage = ""
+  next()
+})
+
+
 /* ***********************
  * Routes
  *************************/
