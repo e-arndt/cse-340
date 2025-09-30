@@ -820,6 +820,19 @@ footer p {
 }
 
 
+@media (max-width: 675px) {
+  #main-nav ul {
+    flex-direction: column;   /* stack items vertically */
+    align-items: center;      /* center them */
+  }
+
+  #main-nav li a {
+    display: block;
+    width: 100%;              /* full width buttons */
+    text-align: center;       /* center text */
+  }
+}
+
 
 @media (max-width: 500px) {
   .hero-columns {
@@ -837,17 +850,6 @@ footer p {
     position: static;       /* turn off absolute positioning */
     margin-top: 2rem;       /* spacing below HERO image */
     max-width: 100%;        /* expand to full width */
-  }
-
-  #main-nav ul {
-    flex-direction: column;   /* stack items vertically */
-    align-items: center;      /* center them */
-  }
-
-  #main-nav li a {
-    display: block;
-    width: 100%;              /* full width buttons */
-    text-align: center;       /* center text */
   }
 
   .hero-reviews ul {
