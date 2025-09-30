@@ -50,6 +50,10 @@ app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-
 // Browser Cookie Parser Middleware
 app.use(cookieParser())
 
+// JWT Authentication Middleware
+// Checks for a valid JSON Web Token (jwt) in browser cookies.
+app.use(utilities.checkJWTToken)
+
 
 /* ***********************
  * View Engine and Templates

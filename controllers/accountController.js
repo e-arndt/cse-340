@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
-
 /* ****************************************
 *  Deliver login view
 * *************************************** */
@@ -23,7 +22,6 @@ async function buildLogin(req, res, next) {
     preloadImage: "/images/site/checkerboard.jpg"
   })
 }
-
 
 /* ****************************************
 *  Deliver registration view
@@ -43,6 +41,44 @@ async function buildRegister(req, res, next) {
   })
 }
 
+/* ****************************************
+*  Deliver Inventory Management view
+* *************************************** */
+async function buildInventoryManagement(req, res, next) {
+  const nav = await utilities.getNav()
+  res.render("account/management", {
+    title: "Inventory Management",
+    nav,
+    errors: null,
+    metaDescription: "Manage your CSE Motors inventory — add classifications and new vehicles.",
+    ogTitle: "CSE Motors - Inventory Management",
+    ogDescription: "Access tools to add new vehicle classifications and manage the inventory.",
+    ogImage: "/images/site/delorean.jpg",
+    ogUrl: req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+
+/* ****************************************
+*  Deliver Account Management Landing View
+* *************************************** */
+async function buildAccountHome(req, res, next) {
+  const nav = await utilities.getNav()
+  res.render("account/management-home", {
+    title: "Account Management",
+    nav,
+    errors: null,
+    metaDescription: "Landing page for your CSE Motors account.",
+    ogTitle: "CSE Motors - Account Landing",
+    ogDescription: "You’re logged in to your CSE Motors account.",
+    ogImage: "/images/site/delorean.jpg",
+    ogUrl: req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg"
+  })
+}
+
+
 
 /* ****************************************
 *  Process Registration
@@ -53,11 +89,10 @@ async function registerAccount(req, res, next) {
   // Hash the password before storing
   let hashedPassword
   try {
-    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10)
   } catch (error) {
-    req.flash("notice", 'Sorry, there was an error processing the registration.')
-    res.status(500).render("account/register", {
+    req.flash("notice", "Sorry, there was an error processing the registration.")
+    return res.status(500).render("account/register", {
       title: "Registration",
       nav,
       errors: null,
@@ -72,13 +107,12 @@ async function registerAccount(req, res, next) {
       hashedPassword
     )
 
-
     if (regResult) {
       req.flash("notice", "Account successfully created. Please log in.")
-      res.redirect("/account/login")
+      return res.redirect("/account/login")
     } else {
       let nav = await utilities.getNav()
-      res.status(500).render("account/register", {
+      return res.status(500).render("account/register", {
         title: "Register",
         nav,
         metaDescription: "Register for a CSE Motors account.",
@@ -95,10 +129,9 @@ async function registerAccount(req, res, next) {
   }
 }
 
-
 /* ****************************************
- *  Process login request
- * ************************************ */
+*  Process login request
+* *************************************** */
 async function accountLogin(req, res) {
   const nav = await utilities.getNav()
   const { account_email, account_password } = req.body
@@ -132,10 +165,9 @@ async function accountLogin(req, res) {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
 
-      // Redirect to account management area
+      // Redirect to account landing page
       return res.redirect("/account/")
     } else {
-      // Invalid password
       req.flash("notice", "Please check your credentials and try again.")
       return res.status(400).render("account/login", {
         title: "Login",
@@ -156,12 +188,12 @@ async function accountLogin(req, res) {
   }
 }
 
-
-module.exports = { 
-  buildLogin, 
-  buildRegister, 
-  registerAccount, 
-  accountLogin 
+module.exports = {
+  buildLogin,
+  buildRegister,
+  buildAccountHome,
+  registerAccount,
+  accountLogin,
+  buildInventoryManagement
 }
-
 

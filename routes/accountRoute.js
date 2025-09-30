@@ -3,7 +3,7 @@ const express = require("express")
 const router = new express.Router() 
 const utilities = require("../utilities")
 const accountController = require("../controllers/accountController")
-const regValidate = require('../utilities/account-validation')
+const regValidate = require("../utilities/account-validation")
 
 // GET /account/login
 router.get(
@@ -17,7 +17,6 @@ router.get(
   utilities.handleErrors(accountController.buildRegister)
 )
 
-
 // POST /account/register
 // Handles form submission from the registration view
 router.post(
@@ -27,8 +26,8 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 )
 
-
-// Process the login attempt
+// POST /account/login
+// Handles login request submission
 router.post(
   "/login",
   regValidate.loginRules(),
@@ -36,4 +35,19 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
-module.exports = router;
+// GET /account/ (default route)
+// Account landing page
+router.get(
+  "/",
+  utilities.handleErrors(accountController.buildAccountHome)
+)
+
+// GET /account/management
+// Inventory management view
+router.get(
+  "/management",
+  utilities.handleErrors(accountController.buildInventoryManagement)
+)
+
+
+module.exports = router
