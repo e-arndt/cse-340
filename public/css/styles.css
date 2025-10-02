@@ -695,7 +695,7 @@ main h1 {
 }
 
 
-/* Default = red */
+/* Default neutral border */
 #inv_make,
 #inv_model,
 #inv_year,
@@ -707,7 +707,7 @@ main h1 {
 #inv_thumbnail,
 #classification_id,
 #classification_name {
-  border: 2px solid red;
+  border: 2px solid #ccc; /* neutral gray */
   border-radius: var(--radius-sm);
   padding: 0.5rem;
   font-size: 1rem;
@@ -715,6 +715,7 @@ main h1 {
   width: 90%;
   margin: 0 auto;
 }
+
 
 #inv_description {
   min-height: 100px;
