@@ -716,6 +716,10 @@ main h1 {
   margin: 0 auto;
 }
 
+#inv_description {
+  min-height: 100px;
+}
+
 /* Valid state */
 #inv_make.valid,
 #inv_model.valid,
@@ -785,6 +789,176 @@ main h1 {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
+/* Management Page Heading */
+.mgmt-heading {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 0.25rem;
+}
+
+/* Instructions */
+.mgmt-instructions {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.mgmt-select {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  margin: 1rem 0;
+}
+
+
+/* Dropdown (scoped to management page only) */
+.mgmt-select select,
+.mgmt-dropdown {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mgmt-select select:focus,
+.mgmt-dropdown:focus {
+  border-color: #000;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  outline: none;
+}
+
+.mgmt-select option,
+.mgmt-dropdown option {
+  font-size: 1rem;
+  padding: 0.25rem;
+  background-color: #fff;
+  color: #000;
+}
+
+/* Hover effect on dropdown options */
+.mgmt-select option:hover,
+.mgmt-dropdown option:hover {
+  background-color: var(--color-border);
+  color: #000;
+}
+
+
+/* Management table buttons */
+.mgmt-btn {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: #000;
+  background-color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect */
+.mgmt-btn:hover {
+  background-color: var(--color-border);
+  color: #000;
+}
+
+/* Specific styles (optional, for clarity) */
+.modify-btn {
+  color: green;
+  border-color: green;
+}
+.modify-btn:hover {
+  background-color: green;
+  color: #fff;
+}
+
+.delete-btn {
+  color: red;
+  border-color: red;
+}
+.delete-btn:hover {
+  background-color: red;
+  color: #fff;
+}
+
+/* Center buttons in table cells */
+.mgmt-table td:nth-child(2),
+.mgmt-table td:nth-child(3) {
+  text-align: center;
+}
+
+/* Center wrapper */
+.mgmt-table-wrapper {
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  margin-top: 1rem;
+}
+
+/* Table styling */
+.mgmt-table {
+  font-family: var(--font-sans);
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 800px;
+  background-color: #fff;
+  border: 2px solid var(--color-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+/* Header */
+.mgmt-table th {
+  font-size: 1.2rem;
+  background-color: var(--color-border);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+}
+
+/* Cells */
+.mgmt-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  text-align: center;   /* all cells centered */
+  vertical-align: middle;
+}
+
+/* Vehicle Name column (all rows in tbody) */
+.mgmt-table tbody td:first-child {
+  font-size: 1.1rem;    /* adjust size */
+  font-weight: bold;    /* make names stand out */
+  color: #222;          /* darker for readability */
+  padding-left: .5rem;   /* space from border */
+}
+
+noscript {
+  font-family: var(--font-sans);
+  display: block;
+  margin: 1rem auto;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  max-width: 600px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #b00020;              /* red warning */
+  background-color: #fff0f0;   /* light red background */
+  border: 2px solid #b00020;
+  border-radius: var(--radius-sm);
+}
+
 .copyright {
   font-family: var(--font-sans);
   font-size: var(--font-ul-size);
@@ -792,11 +966,14 @@ main h1 {
   padding: 5px 0 5px 5px;                 
 }
 
+footer {
+  margin-top: 2rem;
+}
 
 footer p {
   font-family: var(--font-sans);
   font-size: .75rem;
-  margin: 0;         
+  margin: 0;
   padding: 5px 0 10px 0;
 }
 
@@ -872,4 +1049,16 @@ footer p {
   .hero-reviews ul {
     padding-left: 1.5rem;   /* add room so not crushed on the left edge */
   }
+
+  /* Vehicle Name column (all rows in tbody) */
+  .mgmt-table tbody td:first-child {
+    font-size: .9rem;    /* adjust size */
+
+}
+
+/* Header */
+  .mgmt-table th {
+    font-size: 1rem;
+}
+
 }

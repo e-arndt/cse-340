@@ -160,7 +160,8 @@ Util.buildClassificationList = async function (selectedClassificationId = null) 
   const data = await invModel.getClassifications()
   let classifications = data.rows
 
-  let list = '<select name="classification_id" id="classificationList" required>'
+  // id and name must match the label's "for"
+  let list = '<select class="mgmt-dropdown" name="classification_id" id="classification_id" required>'
   list += '<option value="">Choose a Classification</option>'
 
   classifications.forEach((row) => {
@@ -172,6 +173,7 @@ Util.buildClassificationList = async function (selectedClassificationId = null) 
   list += "</select>"
   return list
 }
+
 
 
 module.exports = Util

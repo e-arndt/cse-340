@@ -73,7 +73,7 @@ validate.vehicleRules = () => {
 }
 
 /* ******************************
- * Check vehicle data and return errors or continue
+ * Check vehicle data and return errors or continue (ADD)
  * ***************************** */
 validate.checkVehicleData = async (req, res, next) => {
   const {
@@ -99,7 +99,6 @@ validate.checkVehicleData = async (req, res, next) => {
       title: "Add New Vehicle",
       nav,
       classifications,
-      metaDescription: "Form for adding a new vehicle to CSE Motors inventory.",
       locals: {
         inv_make,
         inv_model,
@@ -111,12 +110,70 @@ validate.checkVehicleData = async (req, res, next) => {
         inv_image,
         inv_thumbnail,
         classification_id
-      }
+      },
+      metaDescription: "Form for adding a new vehicle to CSE Motors inventory.",
+      ogTitle: "Add Vehicle - CSE Motors",
+      ogDescription: "Add a new vehicle into the CSE Motors system.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.originalUrl
     })
   }
 
   next()
 }
+
+/* ******************************
+ * Check vehicle data for UPDATE
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_price,
+    inv_miles,
+    inv_color,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    classification_id
+  } = req.body
+
+  let errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList(classification_id)
+
+    return res.render("inventory/edit-inventory", {
+      errors,
+      title: "Edit " + inv_make + " " + inv_model,
+      nav,
+      classificationSelect,
+      locals: {
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_price,
+        inv_miles,
+        inv_color,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        classification_id
+      },
+      metaDescription: "Edit a vehicle in the CSE Motors inventory.",
+      ogTitle: "Edit Vehicle - CSE Motors",
+      ogDescription: "Update vehicle details in the CSE Motors system.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.originalUrl
+    })
+  }
+
+  next()
+}
+
 
 
 module.exports = validate

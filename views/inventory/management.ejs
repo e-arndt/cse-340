@@ -10,20 +10,26 @@
 </ul>
 
 <!-- Step 1: Heading -->
-<h2>Manage Inventory</h2>
+<h2 class="mgmt-heading">Manage Inventory</h2>
 
 <!-- Step 2: Instructions -->
-<p>Select a classification from the list to see the items belonging to that classification.</p>
+<p class="mgmt-instructions">
+  Select a classification from the list to see the items belonging to that classification.
+</p>
 
 <!-- Step 3: Classification list -->
-<%- classificationSelect %>
+<div class="mgmt-select">
+  <%- classificationSelect %>
+</div>
 
 <!-- Step 4: Empty table for inventory items -->
-<table id="inventoryDisplay"></table>
+<div class="mgmt-table-wrapper">
+  <table id="inventoryDisplay" class="mgmt-table"></table>
+</div>
+
 
 <!-- Step 5: Fallback if JS is disabled -->
 <noscript>JavaScript must be enabled to use this page.</noscript>
 
 <!-- Link to the inventory JavaScript -->
 <script src="/js/inventory.js"></script>
-

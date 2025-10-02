@@ -56,5 +56,21 @@ router.get(
   utilities.handleErrors(invController.getInventoryJSON)
 )
 
+/* ***************************
+ * Edit Inventory Item View
+ * ************************** */
+router.get(
+  "/edit/:inv_id",
+  utilities.handleErrors(invController.buildEditInventoryView)
+);
+
+// POST update vehicle
+router.post(
+  "/update",
+  invValidate.vehicleRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateVehicle)
+)
+
 
 module.exports = router;

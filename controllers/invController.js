@@ -252,4 +252,139 @@ invCont.getInventoryJSON = async (req, res, next) => {
 }
 
 
+/* ***************************
+ *  Build edit inventory view
+ * ************************** */
+invCont.buildEditInventoryView = async function (req, res, next) {
+  try {
+    // 1. Get inv_id from URL
+    const inv_id = parseInt(req.params.inv_id)
+
+    // 2. Build nav
+    let nav = await utilities.getNav()
+
+    // 3. Get vehicle details from DB
+    const itemData = await invModel.getInventoryById(inv_id)
+
+    if (!itemData) {
+      req.flash("notice", "Vehicle not found")
+      return res.redirect("/inv/")
+    }
+
+    // 4. Build classification dropdown with current classification pre-selected
+    const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
+
+    // 5. Create vehicle name for title
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    // 6. Render the edit form with all values sticky
+    res.render("./inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      errors: null,
+      locals: {
+        inv_id: itemData.inv_id,
+        inv_make: itemData.inv_make,
+        inv_model: itemData.inv_model,
+        inv_year: itemData.inv_year,
+        inv_description: itemData.inv_description,
+        inv_image: itemData.inv_image,
+        inv_thumbnail: itemData.inv_thumbnail,
+        inv_price: itemData.inv_price,
+        inv_miles: itemData.inv_miles,
+        inv_color: itemData.inv_color,
+        classification_id: itemData.classification_id
+      }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+/* ***************************
+ *  Process update vehicle
+ * ************************** */
+invCont.updateVehicle = async function (req, res, next) {
+  let {
+    inv_id,
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color
+  } = req.body
+
+  // Ensure default image paths if missing
+  if (!inv_image || inv_image.trim() === "") {
+    inv_image = "/images/vehicles/no-car-image.png"
+  }
+  if (!inv_thumbnail || inv_thumbnail.trim() === "") {
+    inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
+  }
+
+  let nav = await utilities.getNav()
+
+  try {
+    const updateResult = await invModel.updateVehicle(
+      inv_id,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
+    )
+
+    if (updateResult) {
+      req.flash(
+        "notice",
+        `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully updated.`
+      )
+      res.redirect("/inv/")
+    } else {
+      req.flash("notice", "Sorry, the update failed.")
+      const classificationSelect = await utilities.buildClassificationList(classification_id)
+      res.status(500).render("./inventory/edit-inventory", {
+        title: "Edit " + inv_year + " " + inv_make + " " + inv_model,
+        nav,
+        classificationSelect,
+        errors: null,
+        locals: {
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id,
+        },
+        metaDescription: "Edit a vehicle in the CSE Motors inventory.",
+        ogTitle: "Edit Vehicle - CSE Motors",
+        ogDescription: "Update vehicle details in the CSE Motors system.",
+        ogImage: "/images/site/delorean.jpg",
+        ogUrl: req.originalUrl
+      })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+
 module.exports = invCont
