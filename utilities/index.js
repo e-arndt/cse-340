@@ -124,4 +124,54 @@ Util.checkJWTToken = (req, res, next) => {
 }
 
 
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+ Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
+
+
+ /* ****************************************
+ *  Check if user is Employee or Admin
+ * ************************************ */
+Util.checkAccountType = (req, res, next) => {
+  if (res.locals.loggedin && 
+     (res.locals.accountData.account_type === "Employee" || 
+      res.locals.accountData.account_type === "Admin")) {
+    next()
+  } else {
+    req.flash("notice", "You do not have permission to access that page.")
+    return res.redirect("/account/login")
+  }
+}
+
+
+
+ /* ****************************************
+ * Build classification select list
+ * *************************************** */
+Util.buildClassificationList = async function (selectedClassificationId = null) {
+  const data = await invModel.getClassifications()
+  let classifications = data.rows
+
+  let list = '<select name="classification_id" id="classificationList" required>'
+  list += '<option value="">Choose a Classification</option>'
+
+  classifications.forEach((row) => {
+    list += `<option value="${row.classification_id}" ${
+      selectedClassificationId == row.classification_id ? "selected" : ""
+    }>${row.classification_name}</option>`
+  })
+
+  list += "</select>"
+  return list
+}
+
+
 module.exports = Util

@@ -14,4 +14,9 @@
   </ul>
 <% } %>
 
-<p>You’re logged in.</p>
+<% if (account_firstname) { %>
+  <h2 class="welcome">Welcome <%= account_firstname %>!</h2>
+<% } %>
+
+<p class="login-status">You’re logged in.</p>
+

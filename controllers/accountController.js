@@ -69,6 +69,7 @@ async function buildAccountHome(req, res, next) {
     title: "Account Management",
     nav,
     errors: null,
+    account_firstname: res.locals.accountData.account_firstname, // Get from res.locals
     metaDescription: "Landing page for your CSE Motors account.",
     ogTitle: "CSE Motors - Account Landing",
     ogDescription: "You’re logged in to your CSE Motors account.",
@@ -77,6 +78,7 @@ async function buildAccountHome(req, res, next) {
     preloadImage: "/images/site/checkerboard.jpg"
   })
 }
+
 
 
 

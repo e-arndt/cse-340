@@ -36,9 +36,10 @@ router.post(
 )
 
 // GET /account/ (default route)
-// Account landing page
+// Account management landing page
 router.get(
   "/",
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildAccountHome)
 )
 

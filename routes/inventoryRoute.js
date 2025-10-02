@@ -13,11 +13,14 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 router.get("/detail/:invId", 
   utilities.handleErrors(invController.buildDetailView))
 
-// GET inventory management
+// GET /inv/ (management view)
 router.get(
   "/",
+  utilities.checkLogin,        // must be logged in
+  utilities.checkAccountType,  // must be Employee/Admin
   utilities.handleErrors(invController.buildManagement)
 )
+
 
 // GET add classification
 router.get(
@@ -47,6 +50,11 @@ router.post(
   utilities.handleErrors(invController.addVehicle)
 )
 
+// GET inventory items by classification_id (JSON response)
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
+)
 
 
 module.exports = router;

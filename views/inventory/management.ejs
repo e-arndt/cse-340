@@ -8,3 +8,22 @@
   <li><a href="/inv/add-classification">Add New Classification</a></li>
   <li><a href="/inv/add-vehicle">Add New Vehicle</a></li>
 </ul>
+
+<!-- Step 1: Heading -->
+<h2>Manage Inventory</h2>
+
+<!-- Step 2: Instructions -->
+<p>Select a classification from the list to see the items belonging to that classification.</p>
+
+<!-- Step 3: Classification list -->
+<%- classificationSelect %>
+
+<!-- Step 4: Empty table for inventory items -->
+<table id="inventoryDisplay"></table>
+
+<!-- Step 5: Fallback if JS is disabled -->
+<noscript>JavaScript must be enabled to use this page.</noscript>
+
+<!-- Link to the inventory JavaScript -->
+<script src="/js/inventory.js"></script>
+
