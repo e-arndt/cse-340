@@ -1,0 +1,33 @@
+<form id="deleteVehicleForm" class="delete-vehicle-form" action="/inv/delete" method="post">
+  <fieldset>
+    <legend>Vehicle Details</legend>
+
+    <div class="delete-vehicle-layout">
+      <!-- Vehicle Image -->
+      <div class="delete-vehicle-image">
+        <img src="<%= locals.inv_image %>" 
+            alt="<%= locals.inv_make %> <%= locals.inv_model %>">
+</div>
+
+
+      <!-- Vehicle Info -->
+      <div class="delete-vehicle-info">
+        <input type="hidden" name="inv_id" value="<%= locals.inv_id %>">
+
+        <label for="inv_make">Make:</label>
+        <input type="text" id="inv_make" name="inv_make" value="<%= locals.inv_make %>" readonly>
+
+        <label for="inv_model">Model:</label>
+        <input type="text" id="inv_model" name="inv_model" value="<%= locals.inv_model %>" readonly>
+
+        <label for="inv_year">Year:</label>
+        <input type="text" id="inv_year" name="inv_year" value="<%= locals.inv_year %>" readonly>
+
+        <label for="inv_price">Price:</label>
+        <input type="text" id="inv_price" name="inv_price" value="<%= locals.inv_price %>" readonly>
+
+        <button type="submit" class="rbtn danger">Delete Vehicle</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

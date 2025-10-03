@@ -39,6 +39,11 @@
   --font-ul-size: 1.1rem;
 }
 
+:root {
+  font-family: var(--font-sans);
+}
+
+
 body {
   background: var(--color-rev-text);
   padding: 0;
@@ -960,6 +965,79 @@ noscript {
   border-radius: var(--radius-sm);
 }
 
+
+/* Delete Confirmation Form */
+.delete-vehicle-form {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: rgba(229, 194, 21, 0.75);
+  border: 1px solid #ccc;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.delete-vehicle-form fieldset {
+  border: 2px solid var(--color-text);
+}
+
+/* Layout: image left, details right */
+.delete-vehicle-form .delete-vehicle-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 400px) minmax(220px, 320px);
+  column-gap: clamp(1rem, 4vw, 3rem);
+  align-items: start;     /* align tops */
+}
+
+/* Image column */
+.delete-vehicle-form .delete-vehicle-image {
+  margin: 0;
+  width: 100%;
+  height: 260px;          /* a bit taller for breathing room */
+  display: flex;
+  align-items: center;    /* center image vertically */
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Image itself */
+.delete-vehicle-form .delete-vehicle-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* keep aspect, crop if needed */
+}
+
+
+/* Info column */
+.delete-vehicle-form .delete-vehicle-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* center all children */
+  gap: 0.25rem;
+  width: 100%;
+}
+
+/* Labels specifically inside this info column */
+.delete-vehicle-form .delete-vehicle-info label {
+  align-self: flex-start;   /* stick to the left edge of column */
+  margin-top: .75rem;
+  margin-left: 1rem;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Inputs + button */
+.delete-vehicle-form .delete-vehicle-info input,
+.delete-vehicle-form .delete-vehicle-info button {
+  width: 100%;
+  max-width: 280px;
+}
+
+
+
 .copyright {
   font-family: var(--font-sans);
   font-size: var(--font-ul-size);
@@ -983,24 +1061,15 @@ footer p {
   #wrapper {
     padding: 0 8px;
   }
-
-  
-
 }
 
-
 @media (max-width: 850px) {
-  @media (max-width: 850px) {
   .hero-upgrades,
   .hero-reviews {
     flex: 1 1 45%;  /* each takes about half width */
-    max-width: 400px; /* cap the size */
+    max-width: 400px;
   }
 }
-
-
-}
-
 
 @media (max-width: 768px) {
   .vehicle-detail {
@@ -1014,20 +1083,38 @@ footer p {
   }
 }
 
+/* Delete confirmation form responsiveness */
+@media (max-width: 700px) {
+  .delete-vehicle-form .delete-vehicle-layout {
+    grid-template-columns: 1fr;   /* single column */
+    row-gap: 1rem;
+  }
+
+  .delete-vehicle-form .delete-vehicle-image,
+  .delete-vehicle-form .delete-vehicle-info {
+    justify-self: center; /* center within column */
+    max-width: 90%;       /* avoid stretching full width */
+  }
+
+  .delete-vehicle-form .delete-vehicle-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
 
 @media (max-width: 675px) {
   #main-nav ul {
-    flex-direction: column;   /* stack items vertically */
-    align-items: center;      /* center them */
+    flex-direction: column;
+    align-items: center;
   }
 
   #main-nav li a {
     display: block;
-    width: 100%;              /* full width buttons */
-    text-align: center;       /* center text */
+    width: 100%;
+    text-align: center;
   }
 }
-
 
 @media (max-width: 500px) {
   .hero-columns {
@@ -1042,24 +1129,20 @@ footer p {
   }
 
   .hero-overlay {
-    position: static;       /* turn off absolute positioning */
-    margin-top: 2rem;       /* spacing below HERO image */
-    max-width: 100%;        /* expand to full width */
+    position: static;
+    margin-top: 2rem;
+    max-width: 100%;
   }
 
   .hero-reviews ul {
-    padding-left: 1.5rem;   /* add room so not crushed on the left edge */
+    padding-left: 1.5rem;
   }
 
-  /* Vehicle Name column (all rows in tbody) */
   .mgmt-table tbody td:first-child {
-    font-size: .9rem;    /* adjust size */
+    font-size: .9rem;
+  }
 
-}
-
-/* Header */
   .mgmt-table th {
     font-size: 1rem;
-}
-
+  }
 }

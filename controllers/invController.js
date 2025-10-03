@@ -386,5 +386,79 @@ invCont.updateVehicle = async function (req, res, next) {
 }
 
 
+/* ***************************
+ *  Build delete confirmation view
+ * ************************** */
+invCont.buildDeleteConfirmation = async function (req, res, next) {
+  try {
+    // 1. Get inv_id from URL
+    const inv_id = parseInt(req.params.inv_id)
+
+    // 2. Build nav
+    let nav = await utilities.getNav()
+
+    // 3. Get vehicle details from DB
+    const itemData = await invModel.getInventoryById(inv_id)
+
+    if (!itemData) {
+      req.flash("notice", "Vehicle not found")
+      return res.redirect("/inv/")
+    }
+
+    // 4. Create vehicle name for title
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    // 5. Render the delete confirmation view
+    res.render("./inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      nav,
+      errors: null,
+      locals: {
+        inv_id: itemData.inv_id,
+        inv_make: itemData.inv_make,
+        inv_model: itemData.inv_model,
+        inv_year: itemData.inv_year,
+        inv_price: itemData.inv_price,
+        inv_image: itemData.inv_image // so we can show the picture
+      }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+/* ***************************
+ *  Process delete vehicle
+ * ************************** */
+invCont.deleteVehicle = async function (req, res, next) {
+  try {
+    // 1) Collect inv_id from POST body (ensure number)
+    const inv_id = parseInt(req.body.inv_id)
+
+    if (Number.isNaN(inv_id)) {
+      req.flash("notice", "Invalid vehicle id.")
+      return res.redirect("/inv/")
+    }
+
+    // 2) Call model to delete
+    const deleteResult = await invModel.deleteInventory(inv_id) // should return rowCount or a truthy value
+
+    // 3) Branch on success/failure
+    if (deleteResult) {
+      // success → back to management
+      req.flash("notice", "The vehicle was successfully deleted.")
+      return res.redirect("/inv/")
+    } else {
+      // failure → back to the same delete confirmation view
+      req.flash("notice", "Sorry, the delete failed.")
+      return res.redirect(`/inv/delete/${inv_id}`)
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 
 module.exports = invCont

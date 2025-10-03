@@ -72,5 +72,20 @@ router.post(
   utilities.handleErrors(invController.updateVehicle)
 )
 
+// Delete Confirmation View (Get item data)
+router.get(
+  "/delete/:inv_id",
+  utilities.checkLogin,  // must be logged in
+  utilities.handleErrors(invController.buildDeleteConfirmation)
+)
+
+// Carry Out the Delete (Delete item from DB)
+router.post(
+  "/delete",
+  utilities.checkLogin,
+  utilities.handleErrors(invController.deleteVehicle)
+)
+
+
 
 module.exports = router;
