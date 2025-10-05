@@ -244,8 +244,25 @@ invCont.buildEditInventoryView = async function (req, res, next) {
   try {
     const inv_id = parseInt(req.params.inv_id)
     const nav = await utilities.getNav()
-    const itemData = await invModel.getInventoryById(inv_id)
 
+    // Ensure account info is available for header display
+    if (!res.locals.accountData) {
+      const jwt = require("jsonwebtoken")
+      try {
+        if (req.cookies?.jwt) {
+          const decoded = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+          res.locals.accountData = decoded
+          res.locals.loggedin = true
+        } else if (req.session?.accountData) {
+          res.locals.accountData = req.session.accountData
+          res.locals.loggedin = true
+        }
+      } catch {
+        res.locals.loggedin = false
+      }
+    }
+
+    const itemData = await invModel.getInventoryById(inv_id)
     if (!itemData) {
       req.flash("error", "Vehicle not found.")
       return res.redirect("/inv/")
@@ -259,22 +276,78 @@ invCont.buildEditInventoryView = async function (req, res, next) {
       nav,
       classificationSelect,
       errors: null,
-      locals: {
-        inv_id: itemData.inv_id,
-        inv_make: itemData.inv_make,
-        inv_model: itemData.inv_model,
-        inv_year: itemData.inv_year,
-        inv_description: itemData.inv_description,
-        inv_image: itemData.inv_image,
-        inv_thumbnail: itemData.inv_thumbnail,
-        inv_price: itemData.inv_price,
-        inv_miles: itemData.inv_miles,
-        inv_color: itemData.inv_color,
-        classification_id: itemData.classification_id
-      },
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_description: itemData.inv_description,
+      inv_image: itemData.inv_image,
+      inv_thumbnail: itemData.inv_thumbnail,
+      inv_price: itemData.inv_price,
+      inv_miles: itemData.inv_miles,
+      inv_color: itemData.inv_color,
+      classification_id: itemData.classification_id,
       metaDescription: "Edit a vehicle in the CSE Motors inventory.",
       ogTitle: `Edit ${itemData.inv_make} ${itemData.inv_model}`,
       ogDescription: "Update vehicle details in the CSE Motors system.",
+      ogImage: itemData.inv_image,
+      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg",
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+/* ***************************
+ *  Build delete confirmation view
+ * ************************** */
+invCont.buildDeleteConfirmation = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.params.inv_id)
+    const nav = await utilities.getNav()
+
+    // Ensure account info is available for header display
+    if (!res.locals.accountData) {
+      const jwt = require("jsonwebtoken")
+      try {
+        if (req.cookies?.jwt) {
+          const decoded = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+          res.locals.accountData = decoded
+          res.locals.loggedin = true
+        } else if (req.session?.accountData) {
+          res.locals.accountData = req.session.accountData
+          res.locals.loggedin = true
+        }
+      } catch {
+        res.locals.loggedin = false
+      }
+    }
+
+    const itemData = await invModel.getInventoryById(inv_id)
+    if (!itemData) {
+      req.flash("error", "Vehicle not found.")
+      return res.redirect("/inv/")
+    }
+
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("./inventory/delete-confirm", {
+      title: `Delete ${itemName}`,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+      inv_image: itemData.inv_image,
+      metaDescription: "Confirm vehicle deletion in the CSE Motors inventory.",
+      ogTitle: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
+      ogDescription: "Confirm removal of vehicle from the CSE Motors system.",
       ogImage: itemData.inv_image,
       ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
       preloadImage: "/images/site/checkerboard.jpg",
@@ -361,48 +434,6 @@ invCont.updateVehicle = async function (req, res, next) {
   } catch (err) {
     req.flash("error", "Database error while updating vehicle.")
     next(err)
-  }
-}
-
-/* ***************************
- *  Build delete confirmation view
- * ************************** */
-invCont.buildDeleteConfirmation = async function (req, res, next) {
-  try {
-    const inv_id = parseInt(req.params.inv_id)
-    const nav = await utilities.getNav()
-    const itemData = await invModel.getInventoryById(inv_id)
-
-    if (!itemData) {
-      req.flash("error", "Vehicle not found.")
-      return res.redirect("/inv/")
-    }
-
-    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
-
-    res.render("./inventory/delete-confirm", {
-      title: `Delete ${itemName}`,
-      nav,
-      errors: null,
-      locals: {
-        inv_id: itemData.inv_id,
-        inv_make: itemData.inv_make,
-        inv_model: itemData.inv_model,
-        inv_year: itemData.inv_year,
-        inv_price: itemData.inv_price,
-        inv_image: itemData.inv_image
-      },
-      metaDescription: "Confirm vehicle deletion in the CSE Motors inventory.",
-      ogTitle: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
-      ogDescription: "Confirm removal of vehicle from the CSE Motors system.",
-      ogImage: itemData.inv_image,
-      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
-      preloadImage: "/images/site/checkerboard.jpg",
-      accountData: res.locals.accountData,
-      loggedin: res.locals.loggedin
-    })
-  } catch (error) {
-    next(error)
   }
 }
 

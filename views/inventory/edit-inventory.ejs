@@ -35,7 +35,7 @@
     <label for="inv_model">*Model:</label>
     <input type="text" id="inv_model" name="inv_model"
        required minlength="2" 
-       pattern="[A-Za-z0-9 _-]{2,}"
+       pattern="[A-Za-z0-9 _\-]{2,}"
        value="<%= locals.inv_model %>"
        placeholder="Letters, numbers, spaces, hyphens, or underscores, min 2">
 
@@ -49,13 +49,13 @@
     <!-- Image Path -->
     <label for="inv_image">Image Path (optional):</label>
     <input type="text" id="inv_image" name="inv_image"
-           pattern="^/images/vehicles/[a-zA-Z0-9_-]+\.(png|jpg|webp)$"
+           pattern="^/images/vehicles/[a-zA-Z0-9_\-]+-tn\.(png|jpg|webp)$"
            value="<%= locals.inv_image %>" placeholder="/images/vehicles/no-car-image.png">
 
     <!-- Thumbnail Path -->
     <label for="inv_thumbnail">Thumbnail Path (optional):</label>
     <input type="text" id="inv_thumbnail" name="inv_thumbnail"
-           pattern="^/images/vehicles/[a-zA-Z0-9_-]+-tn\.(png|jpg|webp)$"
+           pattern="^/images/vehicles/[a-zA-Z0-9_\-]+-tn\.(png|jpg|webp)$"
            value="<%= locals.inv_thumbnail %>" placeholder="/images/vehicles/no-car-image-tn.png">
 
     <!-- Price -->
