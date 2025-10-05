@@ -121,4 +121,104 @@ validate.checkLoginData = async (req, res, next) => {
   next()
 }
 
+/* **********************************
+ *  Account Update Validation Rules
+ * ********************************* */
+validate.accountUpdateRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .isLength({ min: 2 })
+      .withMessage("First name must be at least 2 characters long.")
+      .isAlpha()
+      .withMessage("First name may only contain letters."),
+    body("account_lastname")
+      .trim()
+      .isLength({ min: 2 })
+      .withMessage("Last name must be at least 2 characters long.")
+      .isAlpha()
+      .withMessage("Last name may only contain letters."),
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email address is required.")
+      .custom(async (account_email, { req }) => {
+        // Check if email is already used by another account
+        const existing = await accountModel.checkExistingEmail(account_email)
+        // Allow current user to keep their email
+        if (existing && account_email !== req.body.current_email) {
+          throw new Error("Email already exists. Please choose another.")
+        }
+        return true
+      })
+  ]
+}
+
+/* **********************************
+ *  Check Updated Account Data
+ * ********************************* */
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    return res.status(400).render("account/edit-account", {
+      title: "Edit Account Information",
+      nav,
+      errors,
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin,
+      metaDescription: "Edit your CSE Motors account information.",
+      ogTitle: "CSE Motors - Edit Account",
+      ogDescription: "Update your account details at CSE Motors.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg"
+    })
+  }
+  next()
+}
+
+/* **********************************
+ *  Password Update Validation Rules
+ * ********************************* */
+validate.passwordRules = () => {
+  return [
+    body("account_password")
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password must be at least 12 characters and include uppercase, lowercase, number, and special character.")
+  ]
+}
+
+/* **********************************
+ *  Check Password Update Data
+ * ********************************* */
+validate.checkPasswordData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    return res.status(400).render("account/edit-account", {
+      title: "Edit Account Information",
+      nav,
+      errors,
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin,
+      metaDescription: "Edit your CSE Motors account information.",
+      ogTitle: "CSE Motors - Edit Account",
+      ogDescription: "Update your account details at CSE Motors.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg"
+    })
+  }
+  next()
+}
+
+
 module.exports = validate

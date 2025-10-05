@@ -9,9 +9,10 @@ const invCont = {}
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
 
   if (!data || data.length === 0) {
+    req.flash("error", "No vehicles found for this classification.")
     return res.status(404).render("./inventory/classification", {
       title: "No vehicles found",
       nav,
@@ -20,8 +21,10 @@ invCont.buildByClassificationId = async function (req, res, next) {
       ogTitle: "No vehicles found",
       ogDescription: "Browse our inventory at CSE Motors.",
       ogImage: "/images/site/delorean.jpg",
-      ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-      preloadImage: "/images/site/checkerboard.jpg"
+      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg",
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin
     })
   }
 
@@ -34,14 +37,14 @@ invCont.buildByClassificationId = async function (req, res, next) {
     ogTitle: `${className} Vehicles at CSE Motors`,
     ogDescription: `Find your next ride among our ${className} vehicles — quality options for every driver.`,
     ogImage: "/images/site/delorean.jpg",
-    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+    ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
     preloadImage: data[0]?.inv_thumbnail || data[0]?.inv_image || "/images/site/checkerboard.jpg",
     nav,
     grid,
+    accountData: res.locals.accountData,
+    loggedin: res.locals.loggedin
   })
 }
-
-
 
 /* ***************************
  *  Build inventory detail view
@@ -49,37 +52,36 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildDetailView = async function (req, res, next) {
   const inv_id = req.params.invId
   const vehicleData = await invModel.getInventoryById(inv_id)
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
 
   if (!vehicleData) {
+    req.flash("error", "Vehicle not found.")
     return next({ status: 404, message: "Vehicle not found" })
   }
 
-  // Build the detail HTML using the utility
   const detail = await utilities.buildDetailView(vehicleData)
-
   res.render("./inventory/detail", {
-  title: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
-  metaDescription: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}. ${vehicleData.inv_description}`,
-  ogTitle: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
-  ogDescription: vehicleData.inv_description,
-  ogImage: vehicleData.inv_image,
-  ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-  preloadImage: vehicleData.inv_image,
-
+    title: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
+    metaDescription: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}. ${vehicleData.inv_description}`,
+    ogTitle: `${vehicleData.inv_year} ${vehicleData.inv_make} ${vehicleData.inv_model}`,
+    ogDescription: vehicleData.inv_description,
+    ogImage: vehicleData.inv_image,
+    ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+    preloadImage: vehicleData.inv_image,
     nav,
-    detail
+    detail,
+    accountData: res.locals.accountData,
+    loggedin: res.locals.loggedin
   })
 }
-
 
 /* ***************************
  *  Build inventory management view
  * ************************** */
 invCont.buildManagement = async function (req, res, next) {
-  let nav = await utilities.getNav()
-
+  const nav = await utilities.getNav()
   const classificationSelect = await utilities.buildClassificationList()
+
   res.render("./inventory/management", {
     title: "Vehicle Management",
     nav,
@@ -89,17 +91,18 @@ invCont.buildManagement = async function (req, res, next) {
     ogTitle: "CSE Motors - Vehicle Management",
     ogDescription: "Access tools to add new classifications and vehicles.",
     ogImage: "/images/site/delorean.jpg",
-    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-    preloadImage: "/images/site/checkerboard.jpg"
+    ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg",
+    accountData: res.locals.accountData,
+    loggedin: res.locals.loggedin
   })
 }
-
 
 /* ***************************
  *  Deliver Add Classification view
  * ************************** */
 invCont.buildAddClassification = async function (req, res, next) {
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
   res.render("./inventory/add-classification", {
     title: "Add New Classification",
     nav,
@@ -108,48 +111,50 @@ invCont.buildAddClassification = async function (req, res, next) {
     ogTitle: "CSE Motors - Add Classification",
     ogDescription: "Add a new type of vehicle to the CSE Motors system.",
     ogImage: "/images/site/delorean.jpg",
-    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-    preloadImage: "/images/site/checkerboard.jpg"
+    ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg",
+    accountData: res.locals.accountData,
+    loggedin: res.locals.loggedin
   })
 }
-
 
 /* ***************************
  *  Deliver Add Vehicle view
  * ************************** */
 invCont.buildAddVehicle = async function (req, res, next) {
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
   const classifications = (await invModel.getClassifications()).rows
+
   res.render("./inventory/add-vehicle", {
     title: "Add New Vehicle",
     nav,
     errors: null,
-    classifications, // for dropdown
+    classifications,
     metaDescription: "Add a new vehicle to the CSE Motors inventory.",
     ogTitle: "CSE Motors - Add Vehicle",
     ogDescription: "Add a new vehicle record into the CSE Motors system.",
     ogImage: "/images/site/delorean.jpg",
-    ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-    preloadImage: "/images/site/checkerboard.jpg"
+    ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+    preloadImage: "/images/site/checkerboard.jpg",
+    accountData: res.locals.accountData,
+    loggedin: res.locals.loggedin
   })
 }
-
 
 /* ***************************
  *  Process add classification
  * ************************** */
 invCont.addClassification = async function (req, res, next) {
   const { classification_name } = req.body
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
 
   try {
     const result = await invModel.addClassification(classification_name)
-
     if (result) {
-      req.flash("notice", `The classification "${classification_name}" was successfully added.`)
+      req.flash("success", `The classification "${classification_name}" was successfully added.`)
       res.redirect("/inv/")
     } else {
-      req.flash("notice", "Sorry, the insert failed.")
+      req.flash("error", "Sorry, the classification insert failed.")
       res.status(500).render("./inventory/add-classification", {
         title: "Add New Classification",
         nav,
@@ -158,16 +163,17 @@ invCont.addClassification = async function (req, res, next) {
         ogTitle: "CSE Motors - Add Classification",
         ogDescription: "Add a new type of vehicle to the CSE Motors system.",
         ogImage: "/images/site/delorean.jpg",
-        ogUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-        preloadImage: "/images/site/checkerboard.jpg"
+        ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+        preloadImage: "/images/site/checkerboard.jpg",
+        accountData: res.locals.accountData,
+        loggedin: res.locals.loggedin
       })
     }
   } catch (err) {
+    req.flash("error", "Database error while adding classification.")
     next(err)
   }
 }
-
-
 
 /* ***************************
  *  Process add vehicle
@@ -186,15 +192,10 @@ invCont.addVehicle = async function (req, res, next) {
     inv_color
   } = req.body
 
-  // --- Apply default image paths if missing ---
-  if (!inv_image || inv_image.trim() === "") {
-    inv_image = "/images/vehicles/no-car-image.png"
-  }
-  if (!inv_thumbnail || inv_thumbnail.trim() === "") {
-    inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
-  }
+  if (!inv_image?.trim()) inv_image = "/images/vehicles/no-car-image.png"
+  if (!inv_thumbnail?.trim()) inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
 
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
 
   try {
     const result = await invModel.addVehicle(
@@ -211,75 +212,50 @@ invCont.addVehicle = async function (req, res, next) {
     )
 
     if (result) {
-      req.flash(
-        "notice",
-        `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully added.`
-      )
+      req.flash("success", `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully added.`)
       res.redirect("/inv/")
     } else {
-  req.flash("notice", "Sorry, the insert failed.")
-  const classifications = (await invModel.getClassifications()).rows
-  res.status(500).render("./inventory/add-vehicle", {
-    title: "Add New Vehicle",
-    nav,
-    errors: null,
-    classifications,
-    metaDescription: "Add a vehicle to the CSE Motors inventory.",
-    ogTitle: "Add New Vehicle - CSE Motors",
-    ogDescription: "Add a new vehicle to the CSE Motors inventory system.",
-    ogImage: "/images/vehicles/no-car-image.png",
-    ogUrl: req.originalUrl,
-    locals: {}
-  })
-}
+      req.flash("error", "Sorry, the vehicle insert failed.")
+      const classifications = (await invModel.getClassifications()).rows
+      res.status(500).render("./inventory/add-vehicle", {
+        title: "Add New Vehicle",
+        nav,
+        errors: null,
+        classifications,
+        metaDescription: "Add a vehicle to the CSE Motors inventory.",
+        ogTitle: "Add New Vehicle - CSE Motors",
+        ogDescription: "Add a new vehicle to the CSE Motors inventory system.",
+        ogImage: "/images/vehicles/no-car-image.png",
+        ogUrl: req.originalUrl,
+        accountData: res.locals.accountData,
+        loggedin: res.locals.loggedin
+      })
+    }
   } catch (err) {
+    req.flash("error", "Database error while adding vehicle.")
     next(err)
   }
 }
-
-/* ***************************
- *  Return Inventory by Classification As JSON
- * ************************** */
-invCont.getInventoryJSON = async (req, res, next) => {
-  const classification_id = parseInt(req.params.classification_id)
-  const invData = await invModel.getInventoryByClassificationId(classification_id)
-
-  if (invData && invData[0] && invData[0].inv_id) {
-    return res.json(invData) // return data as JSON
-  } else {
-    next(new Error("No data returned"))
-  }
-}
-
 
 /* ***************************
  *  Build edit inventory view
  * ************************** */
 invCont.buildEditInventoryView = async function (req, res, next) {
   try {
-    // 1. Get inv_id from URL
     const inv_id = parseInt(req.params.inv_id)
-
-    // 2. Build nav
-    let nav = await utilities.getNav()
-
-    // 3. Get vehicle details from DB
+    const nav = await utilities.getNav()
     const itemData = await invModel.getInventoryById(inv_id)
 
     if (!itemData) {
-      req.flash("notice", "Vehicle not found")
+      req.flash("error", "Vehicle not found.")
       return res.redirect("/inv/")
     }
 
-    // 4. Build classification dropdown with current classification pre-selected
     const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
-
-    // 5. Create vehicle name for title
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
 
-    // 6. Render the edit form with all values sticky
     res.render("./inventory/edit-inventory", {
-      title: "Edit " + itemName,
+      title: `Edit ${itemName}`,
       nav,
       classificationSelect,
       errors: null,
@@ -295,7 +271,15 @@ invCont.buildEditInventoryView = async function (req, res, next) {
         inv_miles: itemData.inv_miles,
         inv_color: itemData.inv_color,
         classification_id: itemData.classification_id
-      }
+      },
+      metaDescription: "Edit a vehicle in the CSE Motors inventory.",
+      ogTitle: `Edit ${itemData.inv_make} ${itemData.inv_model}`,
+      ogDescription: "Update vehicle details in the CSE Motors system.",
+      ogImage: itemData.inv_image,
+      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg",
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin
     })
   } catch (error) {
     next(error)
@@ -321,15 +305,10 @@ invCont.updateVehicle = async function (req, res, next) {
     inv_color
   } = req.body
 
-  // Ensure default image paths if missing
-  if (!inv_image || inv_image.trim() === "") {
-    inv_image = "/images/vehicles/no-car-image.png"
-  }
-  if (!inv_thumbnail || inv_thumbnail.trim() === "") {
-    inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
-  }
+  if (!inv_image?.trim()) inv_image = "/images/vehicles/no-car-image.png"
+  if (!inv_thumbnail?.trim()) inv_thumbnail = "/images/vehicles/no-car-image-tn.png"
 
-  let nav = await utilities.getNav()
+  const nav = await utilities.getNav()
 
   try {
     const updateResult = await invModel.updateVehicle(
@@ -347,70 +326,62 @@ invCont.updateVehicle = async function (req, res, next) {
     )
 
     if (updateResult) {
-      req.flash(
-        "notice",
-        `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully updated.`
-      )
+      req.flash("success", `The vehicle "${inv_year} ${inv_make} ${inv_model}" was successfully updated.`)
       res.redirect("/inv/")
     } else {
-      req.flash("notice", "Sorry, the update failed.")
+      req.flash("error", "Sorry, the update failed.")
       const classificationSelect = await utilities.buildClassificationList(classification_id)
       res.status(500).render("./inventory/edit-inventory", {
-        title: "Edit " + inv_year + " " + inv_make + " " + inv_model,
+        title: `Edit ${inv_year} ${inv_make} ${inv_model}`,
         nav,
         classificationSelect,
         errors: null,
         locals: {
-        inv_id,
-        inv_make,
-        inv_model,
-        inv_year,
-        inv_description,
-        inv_image,
-        inv_thumbnail,
-        inv_price,
-        inv_miles,
-        inv_color,
-        classification_id,
+          inv_id,
+          inv_make,
+          inv_model,
+          inv_year,
+          inv_description,
+          inv_image,
+          inv_thumbnail,
+          inv_price,
+          inv_miles,
+          inv_color,
+          classification_id
         },
         metaDescription: "Edit a vehicle in the CSE Motors inventory.",
         ogTitle: "Edit Vehicle - CSE Motors",
         ogDescription: "Update vehicle details in the CSE Motors system.",
         ogImage: "/images/site/delorean.jpg",
-        ogUrl: req.originalUrl
+        ogUrl: req.originalUrl,
+        accountData: res.locals.accountData,
+        loggedin: res.locals.loggedin
       })
     }
   } catch (err) {
+    req.flash("error", "Database error while updating vehicle.")
     next(err)
   }
 }
-
 
 /* ***************************
  *  Build delete confirmation view
  * ************************** */
 invCont.buildDeleteConfirmation = async function (req, res, next) {
   try {
-    // 1. Get inv_id from URL
     const inv_id = parseInt(req.params.inv_id)
-
-    // 2. Build nav
-    let nav = await utilities.getNav()
-
-    // 3. Get vehicle details from DB
+    const nav = await utilities.getNav()
     const itemData = await invModel.getInventoryById(inv_id)
 
     if (!itemData) {
-      req.flash("notice", "Vehicle not found")
+      req.flash("error", "Vehicle not found.")
       return res.redirect("/inv/")
     }
 
-    // 4. Create vehicle name for title
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
 
-    // 5. Render the delete confirmation view
     res.render("./inventory/delete-confirm", {
-      title: "Delete " + itemName,
+      title: `Delete ${itemName}`,
       nav,
       errors: null,
       locals: {
@@ -419,8 +390,16 @@ invCont.buildDeleteConfirmation = async function (req, res, next) {
         inv_model: itemData.inv_model,
         inv_year: itemData.inv_year,
         inv_price: itemData.inv_price,
-        inv_image: itemData.inv_image // so we can show the picture
-      }
+        inv_image: itemData.inv_image
+      },
+      metaDescription: "Confirm vehicle deletion in the CSE Motors inventory.",
+      ogTitle: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
+      ogDescription: "Confirm removal of vehicle from the CSE Motors system.",
+      ogImage: itemData.inv_image,
+      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg",
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin
     })
   } catch (error) {
     next(error)
@@ -433,32 +412,47 @@ invCont.buildDeleteConfirmation = async function (req, res, next) {
  * ************************** */
 invCont.deleteVehicle = async function (req, res, next) {
   try {
-    // 1) Collect inv_id from POST body (ensure number)
     const inv_id = parseInt(req.body.inv_id)
-
     if (Number.isNaN(inv_id)) {
-      req.flash("notice", "Invalid vehicle id.")
+      req.flash("error", "Invalid vehicle ID.")
       return res.redirect("/inv/")
     }
 
-    // 2) Call model to delete
-    const deleteResult = await invModel.deleteInventory(inv_id) // should return rowCount or a truthy value
-
-    // 3) Branch on success/failure
+    const deleteResult = await invModel.deleteInventory(inv_id)
     if (deleteResult) {
-      // success → back to management
-      req.flash("notice", "The vehicle was successfully deleted.")
+      req.flash("success", "The vehicle was successfully deleted.")
       return res.redirect("/inv/")
     } else {
-      // failure → back to the same delete confirmation view
-      req.flash("notice", "Sorry, the delete failed.")
+      req.flash("error", "Sorry, the delete failed.")
       return res.redirect(`/inv/delete/${inv_id}`)
     }
   } catch (error) {
+    req.flash("error", "Database error while deleting vehicle.")
     next(error)
   }
 }
 
+
+/* ***************************
+ *  Return inventory by classification ID as JSON
+ * ************************** */
+invCont.getInventoryJSON = async function (req, res, next) {
+  try {
+    const classification_id = parseInt(req.params.classification_id)
+    if (isNaN(classification_id)) {
+      return res.status(400).json({ error: "Invalid classification ID" })
+    }
+
+    const inventoryData = await invModel.getInventoryByClassificationId(classification_id)
+    if (inventoryData && inventoryData.length > 0) {
+      return res.json(inventoryData)
+    } else {
+      return res.status(404).json({ message: "No vehicles found for this classification" })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
 
 
 module.exports = invCont

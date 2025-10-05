@@ -40,11 +40,11 @@ validate.checkClassData = async (req, res, next) => {
 validate.vehicleRules = () => {
   return [
     body("inv_make")
-      .matches(/^[A-Za-z]{2,}$/)
-      .withMessage("Make must be 2+ letters only."),
+      .matches(/^[A-Za-z0-9 ]{2,}$/)
+      .withMessage("Make must be 2+ letters, numbers, or spaces."),
     body("inv_model")
-      .matches(/^[A-Za-z0-9]{2,}$/)
-      .withMessage("Model must be 2+ letters or numbers."),
+      .matches(/^[A-Za-z0-9 _-]{2,}$/)
+      .withMessage("Model must be 2+ character."),
     body("inv_year")
       .isInt({ min: 1900, max: new Date().getFullYear() })
       .withMessage("Please provide a valid 4-digit year."),

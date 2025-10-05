@@ -1,0 +1,35 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } %>
+
+<!-- Flash messages -->
+<%- messages() %>
+
+<!-- Errors (if any) -->
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<% if (account_firstname) { %>
+  <p class="account-welcome"><%= account_firstname %>, you’re logged in.</p>
+<% } %>
+
+<ul class="account-links">
+  <li>
+    <a href="/account/edit/<%= account_id %>" class="account-btn">Edit Account Info</a>
+  </li>
+</ul>
+
+<% if (account_type === "Employee" || account_type === "Admin") { %>
+  <section class="inventory-mgmt">
+    <h3>Inventory Management</h3>
+    <p>
+      <a href="/inv/" class="inventory-btn">Manage Inventory</a>
+    </p>
+  </section>
+<% } %>
+

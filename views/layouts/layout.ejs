@@ -7,6 +7,25 @@
         <%- include('../partials/header') %>
         <%- include('../partials/navigation') %>
         <main>
+          <% if (locals.messages && Object.keys(locals.messages).length > 0) { %>
+            <% if (locals.messages.success) { %>
+              <div class="flash flash-success">
+                <% locals.messages.success.forEach(msg => { %><p><%= msg %></p><% }) %>
+              </div>
+            <% } %>
+
+            <% if (locals.messages.error) { %>
+              <div class="flash flash-error">
+                <% locals.messages.error.forEach(msg => { %><p><%= msg %></p><% }) %>
+              </div>
+            <% } %>
+
+            <% if (locals.messages.notice) { %>
+              <div class="flash flash-notice">
+                <% locals.messages.notice.forEach(msg => { %><p><%= msg %></p><% }) %>
+              </div>
+            <% } %>
+          <% } %>
           <%- body %>
         </main>
         <%- include('../partials/footer') %>

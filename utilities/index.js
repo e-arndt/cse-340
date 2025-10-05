@@ -101,26 +101,28 @@ Util.handleErrors = fn => (req, res, next) =>
 
 
 /* ****************************************
-* Middleware to check token validity
-**************************************** */
+ * Middleware to check token validity
+ **************************************** */
 Util.checkJWTToken = (req, res, next) => {
-  if (req.cookies.jwt) {
-    jwt.verify(
-      req.cookies.jwt,
-      process.env.ACCESS_TOKEN_SECRET,
-      function (err, accountData) {
-        if (err) {
-          req.flash("Please log in")
-          res.clearCookie("jwt")
-          return res.redirect("/account/login")
-        }
-        res.locals.accountData = accountData
-        res.locals.loggedin = 1
-        next()
-      })
-  } else {
-    next()
+  res.locals.loggedin = false
+  res.locals.accountData = null
+
+  const token = req.cookies?.jwt
+  if (!token) {
+    return next()
   }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+    if (err) {
+      // Token invalid or expired
+      res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" })
+      return next()
+    }
+    // Token valid
+    res.locals.accountData = accountData
+    res.locals.loggedin = true
+    next()
+  })
 }
 
 
