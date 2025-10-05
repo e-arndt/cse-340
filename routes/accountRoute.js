@@ -12,7 +12,6 @@ router.get(
 )
 
 
-
 // GET /account/register
 router.get(
   "/register",

@@ -62,7 +62,7 @@ app.use(utilities.checkJWTToken)
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.use(express.static("public"))
-app.set("layout", "layouts/layout") // not at views root
+app.set("layout", "layouts/layout")
 
 
 /* ***********************

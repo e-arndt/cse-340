@@ -201,10 +201,10 @@ accountController.updateAccount = async function (req, res, next) {
     )
 
     if (updateResult) {
-      // ✅ Re-fetch updated account from DB
+      // Re-fetch updated account info from DB
       const updatedAccount = await accountModel.getAccountById(account_id)
 
-      // ✅ Refresh JWT cookie with updated info
+      // Refresh JWT cookie with updated info after account update
       const token = jwt.sign(updatedAccount, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
       res.cookie("jwt", token, {
         httpOnly: true,
@@ -213,7 +213,7 @@ accountController.updateAccount = async function (req, res, next) {
         secure: process.env.NODE_ENV === "production"
       })
 
-      // ✅ Update session object (for extra consistency)
+      // Update session object after account update
       req.session.accountData = updatedAccount
 
       req.flash("success", "Account information updated successfully.")

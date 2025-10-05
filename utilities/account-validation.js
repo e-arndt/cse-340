@@ -9,21 +9,21 @@ const accountModel = require("../models/account-model")
  * ********************************* */
 validate.registationRules = () => {
   return [
-    // firstname is required and must be string
+    // firstname is required must be string
     body("account_firstname")
       .trim()
       .escape()
       .isLength({ min: 1 })
       .withMessage("Please provide a first name."),
 
-    // lastname is required and must be string
+    // lastname is required must be string
     body("account_lastname")
       .trim()
       .escape()
       .isLength({ min: 2 })
       .withMessage("Please provide a last name."),
 
-    // valid email is required and cannot already exist in the database
+    // valid email is required cannot already exist in the database
     body("account_email")
       .trim()
       .isEmail()
@@ -89,7 +89,7 @@ validate.loginRules = () => {
       .normalizeEmail()
       .withMessage("Please provide a valid email address."),
 
-    // password is required (don’t enforce strong rules here, just required)
+    // password is required
     body("account_password")
       .trim()
       .notEmpty()

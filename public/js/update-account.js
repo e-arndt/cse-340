@@ -1,7 +1,7 @@
 // update-account.js
 // ------------------------------------------------------
-// Handles unique UX logic for the Account Update form
-// (relies on account.js for all validation and password toggle)
+// Handles UX for Account Update form
+// (relies on account.js for validation & password toggle)
 // ------------------------------------------------------
 
 // Only run if the form exists on the current page
