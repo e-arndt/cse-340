@@ -5,7 +5,7 @@
 <!-- Flash messages -->
 <%- messages() %>
 
-<!-- Errors (if any) -->
+<!-- Errors -->
 <% if (errors) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
@@ -18,18 +18,29 @@
   <p class="account-welcome"><%= account_firstname %>, you’re logged in.</p>
 <% } %>
 
-<ul class="account-links">
-  <li>
-    <a href="/account/edit/<%= account_id %>" class="account-btn">Edit Account Info</a>
-  </li>
-</ul>
+<!-- Unified container for both sections -->
+<div class="account-container">
 
-<% if (account_type === "Employee" || account_type === "Admin") { %>
-  <section class="inventory-mgmt">
-    <h3>Inventory Management</h3>
-    <p>
-      <a href="/inv/" class="inventory-btn">Manage Inventory</a>
-    </p>
+  <section class="edit-account">
+    <div class="account-section-header">
+      <h3>Edit Account Information</h3>
+    </div>
+    <ul class="account-links">
+      <li>
+        <a href="/account/edit/<%= account_id %>" class="account-btn">Edit Account Info</a>
+      </li>
+    </ul>
   </section>
-<% } %>
 
+  <% if (account_type === "Employee" || account_type === "Admin") { %>
+    <div class="divider"></div>
+    <section class="inventory-mgmt">
+      <div class="account-section-header">
+        <h3>Inventory Management</h3>
+      </div>
+      <p>
+        <a href="/inv/" class="inventory-btn">Manage Inventory</a>
+      </p>
+    </section>
+  <% } %>
+</div>

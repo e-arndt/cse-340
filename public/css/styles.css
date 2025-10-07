@@ -1380,6 +1380,50 @@ noscript {
 }
 
 
+/* =====================================
+   Account Management Page Styling
+   ===================================== */
+
+/* Shared container for both account + inventory sections */
+.account-container {
+  background-color: rgba(172, 172, 172, 0.15); /* same tone as .vehicle-info */
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 1.25rem 1.5rem;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Section headers for account/inventory (yellow bar style) */
+.account-section-header {
+  background-color: rgba(238, 204, 34, 0.75); /* similar to .price-detail */
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.account-section-header h3 {
+  font-size: var(--font-h3-size);
+  font-weight: bold;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.account-links,
+.inventory-mgmt p {
+  text-align: center;
+}
+
+/* Divider between sections (for admin/employee only) */
+.divider {
+  border-top: 2px solid var(--color-border);
+  margin: 1.5rem 0;
+}
+
+
 .copyright {
   
   font-size: var(--font-ul-size);
