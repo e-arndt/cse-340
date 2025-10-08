@@ -16,7 +16,10 @@ router.get(
   utilities.handleErrors(invController.buildDetailView)
 )
 
-// ---------- Restricted (Employee/Admin) Routes ----------
+// =============================================
+// Inventory Management Routes (Employee/Admin)
+// =============================================
+
 
 // GET /inv/ (management view)
 router.get(

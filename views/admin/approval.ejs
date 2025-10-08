@@ -1,0 +1,138 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<!-- =============================== -->
+<!--  Pending Classifications -->
+<!-- =============================== -->
+ <div id="admin-approval">
+    <section class="approve-section">
+    <h2 class="mgmt-heading">Pending Classifications</h2>
+
+    <% if (unapprovedClasses && unapprovedClasses.length > 0) { %>
+        <table class="approve-table">
+        <thead>
+            <tr>
+            <th>Classification Name</th>
+            <th>Approve</th>
+            <th>Reject</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% unapprovedClasses.forEach(c => { %>
+            <tr>
+                <td><%= c.classification_name %></td>
+                <td>
+                <form action="/admin/approve" method="post">
+                    <input type="hidden" name="itemType" value="classification">
+                    <input type="hidden" name="id" value="<%= c.classification_id %>">
+                    <button 
+                        type="submit" 
+                        class="approve-btn" 
+                        aria-label="Approve classification <%= c.classification_name %>">
+                        Approve
+                    </button>
+                </form>
+                </td>
+                <td>
+                <form action="/admin/reject" method="post">
+                    <input type="hidden" name="itemType" value="classification">
+                    <input type="hidden" name="id" value="<%= c.classification_id %>">
+                    <button 
+                        type="submit" 
+                        class="reject-btn" 
+                        aria-label="Reject classification <%= c.classification_name %>">
+                        Reject
+                    </button>
+                </form>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+        </table>
+    <% } else { %>
+        <p>No unapproved classifications found.</p>
+    <% } %>
+    </section>
+
+    <!-- =============================== -->
+    <!--  Pending Vehicles -->
+    <!-- =============================== -->
+    <section class="approve-section">
+    <h2 class="mgmt-heading">Pending Vehicles</h2>
+
+    <% if (unapprovedVehicles && unapprovedVehicles.length > 0) { %>
+        <table class="approve-table">
+        <thead>
+            <tr>
+            <th>Vehicle</th>
+            <th>Classification</th>
+            <th>Price</th>
+            <th>Approve</th>
+            <th>Reject</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% unapprovedVehicles.forEach(v => { %>
+            <tr>
+                <td class="vehicle-info-cell">
+                <div class="vehicle-thumb-wrapper">
+                    <% if (v.inv_thumbnail) { %>
+                    <img src="<%= v.inv_thumbnail %>" 
+                        alt="<%= v.inv_make %> <%= v.inv_model %> thumbnail" 
+                        class="vehicle-thumb">
+                    <% } else { %>
+                    <img src="/images/vehicles/no-image-tn.png" 
+                        alt="No image available" 
+                        class="vehicle-thumb">
+                    <% } %>
+                    <div class="vehicle-text">
+                    <strong><%= v.inv_make %> <%= v.inv_model %></strong>
+                    </div>
+                </div>
+                </td>
+                <td><%= v.classification_name %></td>
+                <td>$<%= new Intl.NumberFormat("en-US").format(v.inv_price) %></td>
+                <td>
+                <form action="/admin/approve" method="post">
+                    <input type="hidden" name="itemType" value="vehicle">
+                    <input type="hidden" name="id" value="<%= v.inv_id %>">
+                    <button 
+                        type="submit" 
+                        class="approve-btn" 
+                        aria-label="Approve vehicle <%= v.inv_make %> <%= v.inv_model %>">
+                        Approve
+                    </button>
+                </form>
+                </td>
+                <td>
+                <form action="/admin/reject" method="post">
+                    <input type="hidden" name="itemType" value="vehicle">
+                    <input type="hidden" name="id" value="<%= v.inv_id %>">
+                    <button 
+                        type="submit" 
+                        class="reject-btn" 
+                        aria-label="Reject vehicle <%= v.inv_make %> <%= v.inv_model %>">
+                        Reject
+                    </button>
+                </form>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+        </table>
+    <% } else { %>
+        <p>No unapproved vehicles found.</p>
+    <% } %>
+    </section>
+</div>

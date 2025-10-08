@@ -38,11 +38,28 @@ app.use(session({
 
 
 // Express Messages Middleware
+// Flash message middleware with custom class names
 app.use(require('connect-flash')())
-app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res)
+
+app.use((req, res, next) => {
+  res.locals.messages = () => {
+    const flash = req.flash()
+    let output = ""
+
+    for (const type in flash) {
+      const cssClass = `flash-${type}` // e.g., flash-success, flash-error, flash-notice
+      output += `<ul class="${cssClass}">`
+      flash[type].forEach(msg => {
+        output += `<li>${msg}</li>`
+      })
+      output += `</ul>`
+    }
+
+    return output
+  }
   next()
 })
+
 
 // Body Parser Middleware
 app.use(bodyParser.json())
@@ -95,6 +112,11 @@ app.use("/inv", inventoryRoute)
 
 // Account login route
 app.use("/account", accountRoute)
+
+// Admin approval route
+const adminRoute = require("./routes/adminRoute")
+app.use("/admin", adminRoute)
+
 
 
 /* ***********************

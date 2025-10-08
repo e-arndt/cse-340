@@ -7,6 +7,10 @@
 <ul class="management-links">
   <li><a href="/inv/add-classification">Add New Classification</a></li>
   <li><a href="/inv/add-vehicle">Add New Vehicle</a></li>
+
+  <% if (locals.accountData && locals.accountData.account_type === 'Admin') { %>
+    <li><a href="/admin/approval">Manage Approvals</a></li>
+  <% } %>
 </ul>
 
 <!-- Step 1: Heading -->
@@ -26,7 +30,6 @@
 <div class="mgmt-table-wrapper">
   <table id="inventoryDisplay" class="mgmt-table"></table>
 </div>
-
 
 <!-- Step 5: Fallback if JS is disabled -->
 <noscript>JavaScript must be enabled to use this page.</noscript>

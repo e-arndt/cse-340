@@ -1,3 +1,4 @@
+const pool = require("../database/")
 const invModel = require("../models/inventory-model")
 const Util = {}
 const jwt = require("jsonwebtoken")
@@ -6,25 +7,39 @@ require("dotenv").config()
 
 /* ************************
  * Constructs the nav HTML unordered list
+ * Only shows classifications that are approved
+ * and have at least one approved inventory item
  ************************** */
-Util.getNav = async function (req, res, next) {
-  let data = await invModel.getClassifications()
-  let list = "<ul>"
-  list += '<li><a href="/" title="Home page">Home</a></li>'
-  data.rows.forEach((row) => {
-    list += "<li>"
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>"
-    list += "</li>"
-  })
-  list += "</ul>"
-  return list
+Util.getNav = async function () {
+  try {
+    const data = await pool.query(`
+      SELECT DISTINCT c.classification_id, c.classification_name
+      FROM public.classification AS c
+      JOIN public.inventory AS i
+        ON c.classification_id = i.classification_id
+      WHERE c.classification_approved = true
+        AND i.inv_approved = true
+      ORDER BY c.classification_name
+    `)
+
+    let list = "<ul>"
+    list += '<li><a href="/" title="Home page">Home</a></li>'
+    data.rows.forEach((row) => {
+      list += `
+        <li>
+          <a href="/inv/type/${row.classification_id}"
+             title="See our inventory of ${row.classification_name} vehicles">
+             ${row.classification_name}
+          </a>
+        </li>`
+    })
+    list += "</ul>"
+
+    return list
+  } catch (error) {
+    console.error("getNav error:", error)
+    return '<ul><li><a href="/" title="Home">Home</a></li></ul>'
+  }
 }
 
 
@@ -153,6 +168,18 @@ Util.checkAccountType = (req, res, next) => {
   }
 }
 
+
+/* ****************************************
+ *  Check if user is Admin
+ * ************************************ */
+Util.checkAdmin = (req, res, next) => {
+  if (res.locals.loggedin && res.locals.accountData.account_type === "Admin") {
+    next()
+  } else {
+    req.flash("notice", "Admin access only.")
+    return res.redirect("/account/login")
+  }
+}
 
 
  /* ****************************************

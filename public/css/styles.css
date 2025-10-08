@@ -599,6 +599,7 @@ ul.success-message li {
   background-color: #e7f9e7;
   border: 2px solid var(--color-success);
   color: var(--color-success);
+  list-style: none;
 }
 
 /* Error (red) */
@@ -829,31 +830,53 @@ ul.success-message li {
   padding: 0;
   margin: 1rem auto;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-   max-width: 500px;
+  max-width: 500px;
+  gap: 0.5rem; /* consistent spacing */
 }
 
 .management-links li {
-  margin: 0;
+  flex: 1; /* evenly distribute buttons */
+  display: flex;
+  justify-content: center; /* centers each button inside its space */
   background-color: rgb(244, 221, 165);
+  border-radius: var(--radius-md);
 }
 
 .management-links a {
   display: inline-block;
+  width: 100%;
+  max-width: 160px;
   padding: 0.5rem 1rem;
-  
   font-weight: bold;
   text-decoration: none;
   color: var(--color-link);
   border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  transition: all 0.3s ease;
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
+/* Middle button spacing */
+.management-links li:nth-child(2) {
+  padding: 0;
+  margin: 0 0.75rem; /* spacing without overflow */
+}
+
+/* Hover lift */
 .management-links a:hover {
   background-color: var(--color-border);
   color: var(--color-text);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Pressed (active) state */
+.management-links a:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  filter: brightness(95%);
 }
 
 
@@ -1037,19 +1060,18 @@ ul.success-message li {
 
 /* Instructions */
 .mgmt-instructions {
-  
   font-size: 1rem;
-  color: #444;
+  color: var(--color-text);
   margin-bottom: 1rem;
   line-height: 1.4;
 }
 
+/* Container */
 .mgmt-select {
   display: flex;
   justify-content: center; /* centers horizontally */
   margin: 1rem 0;
 }
-
 
 /* Dropdown (management page only) */
 .mgmt-select select,
@@ -1058,50 +1080,43 @@ ul.success-message li {
   font-size: 1rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background-color: #fff;
+  background-color: rgb(244, 221, 165);
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
+/* Hover + focus */
+.mgmt-select select:hover,
+.mgmt-dropdown:hover,
 .mgmt-select select:focus,
 .mgmt-dropdown:focus {
-  border-color: var(--color-text);
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
-  outline: none;
+  background-color: #eac50b;
+  color: var(--color-text);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
 }
 
+/* Active (pressed) state */
+.mgmt-select select:active,
+.mgmt-dropdown:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  filter: brightness(97%);
+}
+
+/* Dropdown option styling */
 .mgmt-select option,
 .mgmt-dropdown option {
   font-size: 1rem;
   padding: 0.25rem;
-  background-color: #fff;
+  background-color: rgb(255, 252, 234);
   color: var(--color-text);
 }
 
 /* Hover effect on dropdown options */
 .mgmt-select option:hover,
 .mgmt-dropdown option:hover {
-  background-color: var(--color-border);
-  color: var(--color-text);
-}
-
-
-/* Management table buttons */
-.mgmt-btn {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-decoration: none;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
-  background-color: #fff;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Hover effect */
-.mgmt-btn:hover {
   background-color: var(--color-border);
   color: var(--color-text);
 }
@@ -1423,6 +1438,124 @@ noscript {
   margin: 1.5rem 0;
 }
 
+/* ===============================
+   Admin Approval Dashboard Tables
+   =============================== */
+.approve-table {
+  width: 85%;
+  max-width: 900px;
+  margin: 1.5rem auto;
+  border-collapse: collapse;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  background-color: #fff;
+}
+
+.approve-table th,
+.approve-table td {
+  border: 1px solid var(--color-border);
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+.approve-table th {
+  background-color: var(--color-border);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.approve-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.approve-table tbody tr:hover {
+  background-color: rgba(234, 197, 11, 0.1);
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Re-use your existing font scaling */
+.approve-table tbody td:first-child {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Center the whole table section */
+.approve-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem; /* spacing between sections */
+}
+
+/* --- Button styles (reuse color tokens) --- */
+.approve-btn {
+  border: 2px solid var(--color-success);
+  color: var(--color-success);
+  background: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.approve-btn:hover {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.reject-btn {
+  border: 2px solid var(--color-error);
+  color: var(--color-error);
+  background: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.reject-btn:hover {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.approve-btn:active,
+.reject-btn:active {
+  transform: scale(0.97);
+}
+
+/* Thumbnail column alignment */
+.approve-table .vehicle-thumb-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-start;
+}
+
+.approve-table .vehicle-thumb {
+  width: 90px;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.approve-table tr {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.approve-table tr {
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.approve-table tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
 
 .copyright {
   
@@ -1486,6 +1619,94 @@ footer p {
     max-width: 100%;
     height: auto;
     object-fit: contain;
+  }
+
+   /* Turn the table body into a flex column */
+  .approve-table,
+  .approve-table thead,
+  .approve-table tbody,
+  .approve-table tr,
+  .approve-table th,
+  .approve-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide table headers (we’ll use labels instead) */
+  .approve-table thead {
+    display: none;
+  }
+
+  /* Each row becomes a “card” */
+  .approve-table tr {
+    border: 3px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Cell formatting inside each card */
+  .approve-table td {
+    border: none;
+    text-align: center; /* center all content */
+    padding: 0.35rem 0;
+  }
+
+  /* Vehicle thumbnail + name stay side by side */
+  .approve-table .vehicle-thumb-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center horizontally */
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .approve-table .vehicle-thumb {
+    width: 80px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+  }
+
+  /* Classification + price inline under the vehicle name */
+  .approve-table td:nth-of-type(2),
+  .approve-table td:nth-of-type(3) {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+
+  /* Approve/Reject buttons stack below */
+  .approve-table td:nth-of-type(4),
+  .approve-table td:nth-of-type(5) {
+    display: inline-block;
+    width: 48%;
+  }
+
+  /* Center forms themselves */
+  .approve-table td form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  /* Keep buttons from stretching edge-to-edge */
+  .approve-btn,
+  .reject-btn {
+    width: 70%;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  /* Add subtle divider between sections */
+  .approve-section {
+    margin-bottom: 2rem;
   }
 }
 
@@ -1577,6 +1798,23 @@ footer p {
     font-size: 0.9rem;
     padding: 0.2rem 0.4rem;
     text-decoration: none;
+  }
+
+  .management-links {
+    flex-direction: column;
+    max-width: 280px;
+    gap: 0.5rem;
+  }
+
+  .management-links li {
+    width: 100%;
+    padding: 0; /* remove center padding */
+  }
+
+  .management-links a {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.75rem;
+    max-width: none; /* full width inside column */
   }
 
 }
