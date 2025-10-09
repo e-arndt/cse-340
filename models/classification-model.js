@@ -43,13 +43,33 @@ async function approveClassification(classification_id, approverId) {
  * ************************** */
 async function deleteClassification(classification_id) {
   try {
-    const sql = "DELETE FROM public.classification WHERE classification_id = $1"
-    const result = await pool.query(sql, [classification_id])
-    return result.rowCount > 0  // true if deleted
+    // Prevent deletion if vehicles exist
+    const check = await pool.query(
+      "SELECT COUNT(*) FROM public.inventory WHERE classification_id = $1",
+      [classification_id]
+    )
+    if (parseInt(check.rows[0].count) > 0) {
+      return false // don’t delete
+    }
+
+    const result = await pool.query(
+      "DELETE FROM public.classification WHERE classification_id = $1",
+      [classification_id]
+    )
+    return result.rowCount > 0
   } catch (error) {
     console.error("deleteClassification error:", error)
     throw error
   }
+}
+
+
+
+async function getClassificationById(classification_id) {
+  return pool.query(
+    "SELECT * FROM public.classification WHERE classification_id = $1",
+    [classification_id]
+  ).then(result => result.rows[0])
 }
 
 
@@ -59,5 +79,6 @@ async function deleteClassification(classification_id) {
 module.exports = {
   getUnapprovedClassifications,
   approveClassification,
+  getClassificationById,
   deleteClassification
 }

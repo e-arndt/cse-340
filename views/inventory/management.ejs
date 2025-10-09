@@ -16,23 +16,18 @@
 <!-- Step 1: Heading -->
 <h2 class="mgmt-heading">Manage Inventory</h2>
 
-<!-- Step 2: Instructions -->
-<p class="mgmt-instructions">
-  Select a classification for vehicles to Modify or Delete.
-</p>
-
-<!-- Step 3: Classification list -->
+<!-- Step 2: Classification dropdown -->
 <div class="mgmt-select">
   <%- classificationSelect %>
 </div>
 
-<!-- Step 4: Empty table for inventory items -->
+<!-- Step 3: Table for inventory items (initially empty, filled by JS) -->
 <div class="mgmt-table-wrapper">
   <table id="inventoryDisplay" class="mgmt-table"></table>
 </div>
 
-<!-- Step 5: Fallback if JS is disabled -->
+<!-- Step 4: Fallback message if JS is disabled -->
 <noscript>JavaScript must be enabled to use this page.</noscript>
 
-<!-- Link to the inventory JavaScript -->
+<!-- Step 5: Inventory management JS -->
 <script src="/js/inventory.js"></script>

@@ -72,53 +72,111 @@ const classificationList = document.querySelector("#classification_id");
 
 if (classificationList) {
   classificationList.addEventListener("change", function () {
-    let classification_id = classificationList.value;
-    console.log(`classification_id is: ${classification_id}`);
-    let classIdURL = "/inv/getInventory/" + classification_id;
+    const classification_id = classificationList.value;
+    const inventoryDisplay = document.getElementById("inventoryDisplay");
+
+    console.log(`classification_id changed to: ${classification_id}`);
+
+    // Case 1: No classification selected — clear table
+    if (!classification_id) {
+      inventoryDisplay.innerHTML = `
+        <tr>
+          <td colspan="3" class="no-vehicles-msg">
+            Please select a classification to view vehicles.
+          </td>
+        </tr>
+      `;
+      return; // stop here
+    }
+
+    // Case 2: Valid classification — fetch vehicles
+    const classIdURL = "/inv/getInventory/" + classification_id;
+
+    // Clear existing content while loading
+    inventoryDisplay.innerHTML = `
+      <tr>
+        <td colspan="3" class="no-vehicles-msg">Loading vehicles...</td>
+      </tr>
+    `;
 
     fetch(classIdURL)
-      .then(function (response) {
-        if (response.ok) {
-          return response.json();
-        }
-        throw Error("Network response was not OK");
+      .then(response => {
+        if (response.ok) return response.json();
+        throw new Error("Network response was not OK");
       })
-      .then(function (data) {
-        console.log(data);
+      .then(data => {
+        console.log("Fetched data:", data);
         buildInventoryList(data);
       })
-      .catch(function (error) {
-        console.log("There was a problem: ", error.message);
+      .catch(error => {
+        console.error("There was a problem:", error.message);
+        inventoryDisplay.innerHTML = `
+          <tr>
+            <td colspan="3" class="no-vehicles-msg">
+              Error loading inventory. Please try again.
+            </td>
+          </tr>
+        `;
       });
   });
 }
 
-// Build inventory items into HTML table components and inject into DOM
+
+// -----------------------------
+// Build inventory items into HTML table
+// -----------------------------
 function buildInventoryList(data) {
-  let inventoryDisplay = document.getElementById("inventoryDisplay");
+  const inventoryDisplay = document.getElementById("inventoryDisplay");
 
-  // Add class for styling
+  // Always reset table
   inventoryDisplay.classList.add("mgmt-table");
+  inventoryDisplay.innerHTML = ""; // clear old content
 
-  // Set up the table labels
-  let dataTable = "<thead>";
-  dataTable += "<tr><th>Vehicle Name</th><th>Modify</th><th>Delete</th></tr>";
-  dataTable += "</thead>";
+  // Case: Classification has no vehicles
+  if (!data || data.length === 0) {
+    console.log("No vehicles found for this classification.");
+    inventoryDisplay.innerHTML = `
+      <tr>
+        <td colspan="3" class="no-vehicles-msg">
+          This classification currently has no vehicles.<br>
+          <button id="deleteClassBtn" class="delete-class-btn">
+            Delete Classification
+          </button>
+        </td>
+      </tr>
+    `;
 
-  // Set up the table body
-  dataTable += "<tbody>";
+    const deleteBtn = document.getElementById("deleteClassBtn");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", () => {
+        const classId = document.querySelector("#classification_id").value;
+        // Redirect directly to the server-side confirmation page
+        window.location.href = `/inv/delete-classification/${classId}`;
+      });
+    }
+    return;
+  }
 
-  // Iterate over all vehicles in the array and put each in a row
-  data.forEach(function (element) {
-    console.log(element.inv_id + ", " + element.inv_model);
-    dataTable += `<tr><td>${element.inv_make} ${element.inv_model}</td>`;
-    dataTable += `<td><a href='/inv/edit/${element.inv_id}' class='mgmt-btn modify-btn' title='Click to update'>Modify</a></td>`;
-    dataTable += `<td><a href='/inv/delete/${element.inv_id}' class='mgmt-btn delete-btn' title='Click to delete'>Delete</a></td></tr>`;
+  // Case: Vehicles exist — build table normally
+  let dataTable = `
+    <thead>
+      <tr><th>Vehicle Name</th><th>Modify</th><th>Delete</th></tr>
+    </thead>
+    <tbody>
+  `;
+
+  data.forEach(element => {
+    dataTable += `
+      <tr>
+        <td>${element.inv_make} ${element.inv_model}</td>
+        <td><a href='/inv/edit/${element.inv_id}' class='mgmt-btn modify-btn' title='Click to update'>Modify</a></td>
+        <td><a href='/inv/delete/${element.inv_id}' class='mgmt-btn delete-btn' title='Click to delete'>Delete</a></td>
+      </tr>`;
   });
 
   dataTable += "</tbody>";
-
-  // Display the contents in the Inventory Management view
   inventoryDisplay.innerHTML = dataTable;
 }
+
+
 

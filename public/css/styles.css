@@ -1573,7 +1573,89 @@ noscript {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.no-vehicles-msg {
+  background-color: #fff8d1;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-weight: bold;
+  color: var(--color-text);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  text-align: center;
+}
 
+/* Match "Delete Classification" button style to vehicle Delete buttons */
+.delete-class-btn {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border: 2px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  background-color: #fff;
+  font-weight: bold;
+  color: var(--color-error);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s, transform 0.15s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.delete-class-btn:hover {
+  background-color: var(--color-error);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.no-vehicles-msg button {
+  margin-top: 1rem;
+}
+
+.delete-classification-section {
+  background-color: #fff8d1;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.delete-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cancel-btn {
+  background-color: #fff;
+  border: 2px solid var(--color-border);
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:hover {
+  background-color: var(--color-border);
+  color: #000;
+}
+
+.delete-class-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  background-color: #fff;
+  color: var(--color-error);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.delete-class-btn:hover {
+  background-color: var(--color-error);
+  color: #fff;
+}
 
 .copyright {
   
@@ -1833,6 +1915,18 @@ footer p {
     font-size: 0.9rem;
     padding: 0.4rem 0.75rem;
     max-width: none; /* full width inside column */
+  }
+
+   .mgmt-select select,
+  .mgmt-dropdown {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* So it doesn’t touch edges */
+  .mgmt-select {
+    width: 100%;
+    padding: 0 0.25rem;
   }
 
 }

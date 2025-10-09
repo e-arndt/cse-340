@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const classificationModel = require("../models/classification-model")
 
 const invCont = {}
 
@@ -470,20 +471,76 @@ invCont.deleteVehicle = async function (req, res, next) {
 invCont.getInventoryJSON = async function (req, res, next) {
   try {
     const classification_id = parseInt(req.params.classification_id)
+
     if (isNaN(classification_id)) {
       return res.status(400).json({ error: "Invalid classification ID" })
     }
 
     const inventoryData = await invModel.getInventoryByClassificationId(classification_id)
-    if (inventoryData && inventoryData.length > 0) {
-      return res.json(inventoryData)
-    } else {
-      return res.status(404).json({ message: "No vehicles found for this classification" })
+
+    // Always respond successfully with an array (empty or filled)
+    return res.status(200).json(inventoryData || [])
+  } catch (err) {
+    console.error("Error fetching inventory:", err)
+    return res.status(500).json({ message: "Server error" })
+  }
+}
+
+/* ***************************
+ *  Build delete classification confirmation view
+ * ************************** */
+invCont.buildDeleteClassification = async function (req, res, next) {
+  try {
+    const classification_id = parseInt(req.params.classification_id)
+    const nav = await utilities.getNav()
+
+    const classification = await classificationModel.getClassificationById(classification_id)
+
+    if (!classification) {
+      req.flash("error", "Classification not found.")
+      return res.redirect("/inv/")
     }
+
+    res.render("./inventory/delete-classification", {
+      title: `Delete Classification: ${classification.classification_name}`,
+      nav,
+      errors: null,
+      classification_id,
+      classification_name: classification.classification_name,
+      metaDescription: "Confirm deletion of a vehicle classification in CSE Motors.",
+      ogTitle: `Delete ${classification.classification_name} Classification`,
+      ogDescription: "Delete an unused classification from the CSE Motors system.",
+      ogImage: "/images/site/delorean.jpg",
+      ogUrl: req.protocol + "://" + req.get("host") + req.originalUrl,
+      preloadImage: "/images/site/checkerboard.jpg",
+      accountData: res.locals.accountData,
+      loggedin: res.locals.loggedin
+    })
   } catch (err) {
     next(err)
   }
 }
 
+/* ***************************
+ *  Process classification deletion
+ * ************************** */
+invCont.deleteClassification = async function (req, res, next) {
+  try {
+    const classification_id = parseInt(req.body.classification_id)
+    const result = await classificationModel.deleteClassification(classification_id)
+
+    // invController.js → deleteClassification
+    if (result) {
+      req.flash("success", "Classification deleted successfully.")
+    } else {
+      req.flash("error", "Cannot delete classification because vehicles are assigned to it.")
+    }
+
+
+    res.redirect("/inv/")
+  } catch (err) {
+    next(err)
+  }
+}
 
 module.exports = invCont

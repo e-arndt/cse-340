@@ -108,4 +108,20 @@ router.post(
   utilities.handleErrors(invController.deleteVehicle)
 )
 
+// Delete classification (GET confirmation + POST delete)
+router.get(
+  "/delete-classification/:classification_id",
+  utilities.checkLogin,
+  utilities.checkAccountType,
+  utilities.handleErrors(invController.buildDeleteClassification)
+)
+
+router.post(
+  "/delete-classification",
+  utilities.checkLogin,
+  utilities.checkAccountType,
+  utilities.handleErrors(invController.deleteClassification)
+)
+
+
 module.exports = router

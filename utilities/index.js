@@ -191,7 +191,7 @@ Util.buildClassificationList = async function (selectedClassificationId = null) 
 
   // id and name must match the label's
   let list = '<select class="mgmt-dropdown" name="classification_id" id="classification_id" required>'
-  list += '<option value="">Choose a Classification</option>'
+  list += '<option value="">Choose a Classification to Modify or Delete Vehicles</option>'
 
   classifications.forEach((row) => {
     list += `<option value="${row.classification_id}" ${
