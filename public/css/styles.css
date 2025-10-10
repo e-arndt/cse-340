@@ -837,26 +837,27 @@ ul.success-message li {
 }
 
 .management-links li {
-  flex: 1; /* evenly distribute buttons */
+  flex: 1;
   display: flex;
-  justify-content: center; /* centers each button inside its space */
-  background-color: rgb(244, 221, 165);
-  border-radius: var(--radius-md);
+  justify-content: center;
+  /* remove background-color and radius */
 }
 
 .management-links a {
-  display: inline-block;
+  display: block; /* fills the li fully */
   width: 100%;
   max-width: 160px;
   padding: 0.5rem 1rem;
   font-weight: bold;
   text-decoration: none;
   color: var(--color-link);
+  background-color: rgb(244, 221, 165); /* moved here */
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
+
 
 /* Middle button spacing */
 .management-links li:nth-child(2) {
